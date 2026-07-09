@@ -1,0 +1,435 @@
+/* =========================================
+   1. RESET GLOBAL Y VARIABLES
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #a855f7;        /* Morado principal */
+    --primary-hover: #9333ea;  /* Morado oscuro para hover */
+    --bg-grad-1: #f3e8ff;      /* Fondo lavanda */
+    --bg-grad-2: #e0e7ff;      /* Fondo azul claro */
+    --surface: #ffffff;        /* Fondo de tarjetas */
+    --text-main: #1e1b4b;      /* Texto oscuro (títulos) */
+    --text-muted: #64748b;     /* Texto gris (subtítulos) */
+    --border-color: #e2e8f0;   /* Bordes suaves */
+}
+
+body {
+    display: flex;             /* ESTO ES VITAL: Pone sidebar y main lado a lado */
+    min-height: 100vh;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2));
+    color: var(--text-main);
+}
+
+/* =========================================
+   2. ESTRUCTURA PRINCIPAL (LAYOUT)
+   ========================================= */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    flex-shrink: 0;            /* Evita que el sidebar se aplaste */
+    position: sticky;          /* Fija el sidebar al hacer scroll */
+    top: 0;
+    background-color: var(--surface);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 20px;
+    z-index: 100;
+}
+
+#app-content {
+    flex-grow: 1;              /* Toma todo el espacio restante a la derecha */
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;                 /* Separa el header, buscador y tarjeta */
+    overflow-y: auto;          /* Permite scrollear el contenido */
+}
+
+/* =========================================
+   3. ESTILOS INTERNOS DEL SIDEBAR (JS)
+   ========================================= */
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 40px;
+}
+
+.logo-icon { font-size: 28px; }
+.logo-text {
+    font-size: 24px;
+    font-weight: 800;
+    color: #4338ca;
+}
+
+.main-nav { flex-grow: 1; }
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-links a {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    background-color: #eff6ff;
+    color: #4338ca;
+}
+
+.sidebar-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: auto; /* Empuja los botones al fondo */
+}
+
+.btn-outline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px;
+    background-color: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-main);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-outline:hover { background-color: #f8fafc; }
+.btn-logout { color: #ef4444; }
+.btn-logout:hover { background-color: #fef2f2; border-color: #fca5a5; }
+
+/* =========================================
+   4. COMPONENTES DEL CONTENIDO PRINCIPAL
+   ========================================= */
+
+/* Cabecera */
+header { width: 100%; }
+.header-title {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+.subtitle-view {
+    color: var(--text-muted);
+    font-size: 16px;
+}
+
+/* Buscador */
+.search-wrapper { width: 100%; }
+
+#elementos_de_busqueda {
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    padding: 8px 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    max-width: 800px;
+    transition: all 0.3s ease;
+}
+
+#elementos_de_busqueda:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.15);
+}
+
+#input-busqueda {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 16px;
+    font-size: 16px;
+    outline: none;
+    color: var(--text-main);
+}
+
+button {
+    flex-shrink: 0;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   5. TARJETA DE ARTISTA (Horizontal)
+   ========================================= */
+.carta_artista_horizontal {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    min-height: 520px;
+}
+
+/* Lado Izquierdo: Imagen */
+.tarjeta-imagen {
+    flex-shrink: 0;
+    width: 280px;
+}
+
+.tarjeta-imagen img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Lado Derecho: Info y Álbumes */
+.tarjeta-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.artista-titulo {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-main);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+
+.albumes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 30px;
+}
+
+.album-bloque h3 {
+    font-size: 16px;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.album-bloque ul {
+    list-style: none;
+}
+
+.album-bloque li {
+    font-size: 15px;
+    color: var(--text-muted);
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.album-bloque li:last-child {
+    border-bottom: none;
+}
+
+/* =========================================
+   6. RESPONSIVE (Móviles y Tablets)
+   ========================================= */
+@media (max-width: 900px) {
+    body {
+        flex-direction: column; /* Apila el sidebar arriba en pantallas pequeñas */
+    }
+    
+    .sidebar {
+        width: 20%;
+        height: auto;
+        position: relative;
+    }
+
+    .carta_artista_horizontal {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        gap: 24px;
+    }
+
+    .tarjeta-info { width: 100%; }
+    
+    .albumes {
+        text-align: left; /* Mantiene la lista alineada a la izquierda */
+    }
+}
+
+.carta_autenticacion {
+    flex-grow: 1;           /* Ocupa todo el espacio disponible del body */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+}
+
+/* La tarjeta blanca de login */
+.auth-card {
+    background: var(--surface);
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); /* Sombra elegante */
+    width: 100%;
+    max-width: 400px; /* Tamaño máximo para que no se estire mucho en PC */
+    text-align: center;
+}
+
+/* Logo e ícono */
+.auth-card .logo {
+    font-size: 52px;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+/* Títulos y textos */
+.auth-card h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.auth-card .subtitle {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin-bottom: 30px;
+}
+
+/* Contenedores de los inputs */
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* Cajas de texto (Inputs) */
+.form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 15px;
+    color: var(--text-main);
+    background-color: #f8fafc; /* Un gris muuuy clarito */
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* Efecto al hacer clic en el input */
+.form-group input:focus {
+    border-color: var(--primary);
+    background-color: var(--surface);
+    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15); /* Resplandor morado */
+}
+
+
+
+/* Mensajes de validación y estado */
+.status-msg {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 12px;
+    background-color: #f1f5f9;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#seccion-final {
+    background-color: #f0fdf4; /* Fondo verde clarito para el éxito */
+    color: #166534;
+}
+
+.success-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Atributo global para ocultar elementos mediante JS */
+[hidden] {
+    display: none !important;
+}
+
+/* Animación de aparición para el check verde */
+@keyframes popIn {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+/* Estilos para el botón de favoritos */
+.boton_favorito {
+    /* 1. Limitar el tamaño fijo */
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0; /* Evita que el botón se aplaste si falta espacio */
+
+    /* 2. Centrar el texto/emoji internamente */
+    display: flex;
+    justify-content: center; /* Lo centra horizontalmente */
+    align-items: center;     /* Lo centra verticalmente */
+
+    /* 3. Apariencia visual */
+    font-size: 22px;         /* Tamaño del corazón */
+    background-color: #ffffff;
+    border: 2px solid #e2e8f0; /* Borde gris suave */
+    border-radius: 50%;      /* Convierte el cuadrado en un círculo perfecto */
+    cursor: pointer;
+    transition: all 0.2s ease; /* Transición suave para el hover */
+}
+
+/* Efecto al pasar el mouse por encima */
+.boton_favorito:hover {
+    background-color: #fef2f2; /* Fondo rojizo muy suave */
+    border-color: #ef4444;     /* El borde se pinta de rojo */
+    transform: scale(1.1);     /* El botón crece un 10% */
+}
+
+/* Efecto al hacer clic */
+.boton_favorito:active {
+    transform: scale(0.95);    /* El botón se hunde un poco */
+}
