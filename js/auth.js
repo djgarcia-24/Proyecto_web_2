@@ -1,6 +1,7 @@
 import { state, URL_SERVIDOR, audioEl } from "./state.js";
 import { showToast } from "./utils.js";
-import { renderDiscoveryPanel, syncOfflineQueue } from "./ui.js";
+import { syncOfflineQueue } from "./ui.js";
+import { renderDiscoveryPanel } from "./search.js";
 
 // ==============================================
 // MÓDULO 1: CONTROL DE AUTENTICACIÓN Y SESIÓN

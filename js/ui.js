@@ -293,7 +293,7 @@ export function toggleTheme() {
 
   showToast(
     "Tema Cambiado",
-    `Estilo ${newTheme === "dark" ? "Cyber Indigo" : "Soft Velvet"} activado.`,
+    `Estilo ${newTheme === "dark" ? "Deep Sea & Terracotta" : "Desert & Slate"} activado.`,
     "success",
   );
 }
