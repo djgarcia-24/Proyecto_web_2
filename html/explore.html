@@ -1,0 +1,142 @@
+<!-- BANNER DEL ARTISTA SELECCIONADO (Estilo Premium) -->
+<div id="artist-banner" class="artist-banner neu-flat">
+  <div id="artist-banner-overlay" class="artist-banner-overlay"></div>
+  <div
+    id="artist-banner-bg"
+    class="artist-banner-bg"
+    style="
+      background-image: url(&quot;https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop&quot;);
+    "
+  ></div>
+
+  <div class="artist-banner-content">
+    <div class="badge-trend">
+      <span class="badge-trend-dot animate-ping"></span>
+      <span id="artist-tag">Catálogo Deezer</span>
+    </div>
+
+    <div>
+      <h1 id="artist-title" class="artist-title-main">DEEZER-MANAGER</h1>
+      <div class="artist-metadata">
+        <span id="artist-followers"
+          ><i class="fa-solid fa-users"></i> Sincronización Lista</span
+        >
+        <span class="meta-divider">•</span>
+        <span id="artist-website"
+          ><i class="fa-solid fa-globe"></i> www.ucab.edu.ve</span
+        >
+      </div>
+    </div>
+
+    <!-- Botones de Acción Extra de Reproducción -->
+    <div class="action-button-group">
+      <button onclick="shuffleArtistTracks()" class="action-btn-pill primary">
+        <i class="fa-solid fa-shuffle"></i> Aleatorio
+      </button>
+      <button onclick="mixArtistTracks()" class="action-btn-pill outline">
+        <i class="fa-solid fa-bolt"></i> Iniciar Mix
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- PANELES DE DESCUBRIMIENTO PRE-BÚSQUEDA -->
+<div id="discovery-panel" class="library-view-container">
+  <div class="discovery-row-section">
+    <div class="section-header-row">
+      <h3 id="categories-title-label" class="section-heading-visual">
+        <i class="fa-solid fa-shapes text-purple-500"></i>
+        Categorías Sugeridas
+      </h3>
+      <button
+        id="btn-toggle-categories"
+        onclick="toggleAllCategories()"
+        class="section-toggle-btn neu-flat"
+      >
+        Ver Todas
+      </button>
+    </div>
+    <div id="categories-grid" class="categories-grid"></div>
+  </div>
+
+  <div class="discovery-row-section">
+    <div class="section-header-row">
+      <h3 id="artists-title-label" class="section-heading-visual">
+        <i class="fa-solid fa-wand-magic-sparkles text-rose-500"></i>
+        Recomendados para Ti
+      </h3>
+      <button
+        id="btn-toggle-artists"
+        onclick="toggleAllArtists()"
+        class="section-toggle-btn neu-flat"
+      >
+        Ver Todos
+      </button>
+    </div>
+    <div id="artists-grid" class="artists-grid"></div>
+  </div>
+</div>
+
+<!-- SECCIÓN DETALLADA DE MÚSICA (SÓLO VISIBLE CON ARTISTA SELECCIONADO) -->
+<div id="artist-details-section" class="artist-details-grid hidden">
+  <!-- Columna Izquierda: Canciones Más Populares y Biografía -->
+  <div class="details-col-left">
+    <!-- Canciones Más Populares -->
+    <div class="popular-tracks-section">
+      <h3 class="section-subheading">
+        <i class="fa-solid fa-fire text-rose-500"></i> Más Populares
+      </h3>
+      <div id="popular-tracks-list" class="popular-tracks-list">
+        <!-- Inyectado dinámicamente -->
+      </div>
+    </div>
+
+    <!-- Tarjeta Acerca de (Bio del Artista) -->
+    <div class="popular-tracks-section">
+      <h3 class="section-subheading">
+        <i class="fa-solid fa-circle-info text-blue-500"></i> Acerca de
+      </h3>
+      <article id="spotify-about-card" class="spotify-biography-card">
+        <div class="biography-overlay"></div>
+        <div class="biography-content">
+          <div class="bio-tag">BIOGRAFÍA OFICIAL</div>
+          <h4 id="about-card-title" class="bio-title">Nombre</h4>
+          <p id="about-card-listeners" class="bio-listeners">
+            Seguidores activos
+          </p>
+          <p id="about-card-bio" class="bio-text">Cargando detalles...</p>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- Columna Derecha: Discografía Completa y Listado de Canciones por Álbum -->
+  <div class="discography-section">
+    <h3 class="section-subheading">
+      <i class="fa-solid fa-compact-disc text-purple-500 animate-spin"></i>
+      Discografía y Álbumes
+    </h3>
+    <div id="album-grid" class="albums-grid">
+      <!-- Inyectado dinámicamente -->
+    </div>
+  </div>
+</div>
+
+<!-- ESTADO VACÍO (CUANDO NO HAY RESULTADOS O BUSQUEDA EN BLANCO) -->
+<div id="empty-state" class="empty-state neu-flat hidden">
+  <div class="empty-state-icon neu-inset text-rose-500">
+    <i class="fa-solid fa-compass"></i>
+  </div>
+  <h4 class="empty-state-title">Artista No Encontrado</h4>
+  <p class="empty-state-desc">
+    Lo sentimos, no encontramos resultados para tu búsqueda. Intenta con nombres
+    conocidos como Daft Punk, Coldplay, Queen, Eminem, o haz clic en las
+    sugerencias de abajo.
+  </p>
+</div>
+
+<!-- SPINNER DE CARGA DE BÚSQUEDA -->
+<div id="explore-loading" class="loading-state hidden">
+  <div class="ucab-spinner"></div>
+  <p class="loading-text">Conectando con Deezer...</p>
+</div>

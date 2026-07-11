@@ -1,0 +1,77 @@
+<div class="header-logo-section">
+  <div class="header-logo-icon neu-flat">
+    <i class="fa-solid fa-wave-square"></i>
+  </div>
+  <div class="header-logo-title">
+    <h2>Deezer-Manager</h2>
+    <span>Módulo de Control</span>
+  </div>
+</div>
+
+<!-- Barra de Búsqueda Dinámica -->
+<div class="search-container">
+  <form onsubmit="handleSearch(event)" class="search-form">
+    <input
+      type="text"
+      id="search-input"
+      onfocus="showSearchHistory()"
+      onblur="hideSearchHistory()"
+      placeholder="Buscar artistas en Deezer (p.ej. Queen, Daft Punk, Coldplay...)"
+      class="search-input neu-inset-pill"
+      autocomplete="off"
+    />
+    <button
+      type="submit"
+      id="btn-buscar"
+      class="search-submit-btn neu-flat-pill"
+    >
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </form>
+
+  <!-- DROPDOWN FLOTANTE: Búsquedas Recientes -->
+  <div id="search-history" class="search-history-dropdown glass-panel hidden">
+    <div class="history-header">
+      <span class="history-title">Búsquedas Recientes</span>
+      <button onclick="clearSearchHistory()" class="history-clear-btn">
+        Borrar Historial
+      </button>
+    </div>
+    <div id="history-items" class="history-list">
+      <!-- Generado dinámicamente -->
+    </div>
+  </div>
+</div>
+
+<!-- Acciones de Usuario e Interfaz de Cierre de Sesión -->
+<div class="header-actions">
+  <!-- Indicador de Red Móvil (Responsivo, solo se ve en pantallas pequeñas) -->
+  <div
+    id="header-net-indicator"
+    class="header-net-indicator neu-flat-pill online"
+    title="Estado de conexión"
+  >
+    <i class="fa-solid fa-wifi"></i>
+  </div>
+
+  <button
+    onclick="toggleTheme()"
+    class="header-btn neu-flat-pill neu-btn-active"
+    aria-label="Cambiar Tema"
+  >
+    <i id="header-theme-icon" class="fa-solid fa-sun"></i>
+  </button>
+
+  <div class="header-user-profile">
+    <div class="user-avatar neu-flat">U</div>
+    <span id="user-display" class="user-name">UCAB Student</span>
+  </div>
+
+  <button
+    onclick="handleLogout()"
+    class="header-btn header-btn-logout neu-flat-pill neu-btn-active"
+    title="Cerrar Sesión Segura"
+  >
+    <i class="fa-solid fa-right-from-bracket"></i>
+  </button>
+</div>

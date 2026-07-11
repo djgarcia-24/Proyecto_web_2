@@ -1,9 +1,8 @@
 (() => {
-    const aside = document.getElementById('main-sidebar');
-    if (!aside) return; 
+  const aside = document.getElementById("main-sidebar");
+  if (!aside) return;
 
-
-    aside.innerHTML = `
+  aside.innerHTML = `
         <div class="brand-logo">
             <span class="logo-icon" aria-hidden="true"></span>
             <span class="logo-text">Deezer-Manager</span>
@@ -15,7 +14,7 @@
                         <span class="nav-icon" aria-hidden="true">❤️</span><span class="nav-text">Favoritos</span>
                     </a>
 
-                </li>
+                </li> 
                 <li>
                     <a href="buscador.html" class="">
                         <span class="nav-icon" aria-hidden="true">🔍 </span><span class="nav-text">Buscar</span>

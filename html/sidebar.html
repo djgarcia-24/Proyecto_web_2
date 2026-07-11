@@ -1,0 +1,30 @@
+<nav class="sidebar-section">
+  <p class="sidebar-section-title">Navegación</p>
+  <button
+    onclick="switchView('explore')"
+    id="btn-nav-explore"
+    class="nav-btn active neu-flat-pill neu-btn-active"
+  >
+    <i class="fa-solid fa-compass"></i> Explorar Deezer
+  </button>
+  <button
+    onclick="switchView('favorites')"
+    id="btn-nav-favorites"
+    class="nav-btn neu-btn-active"
+  >
+    <i class="fa-solid fa-heart"></i> Mi Colección
+  </button>
+</nav>
+
+<!-- Indicador de Red del Cliente (Escritorio) -->
+<div class="sidebar-network-card neu-flat">
+  <span id="sidebar-net-icon" class="network-icon-wrap online">
+    <i class="fa-solid fa-wifi"></i>
+  </span>
+  <div>
+    <h4 id="sidebar-net-status" class="network-status-title online">
+      Conexión Segura
+    </h4>
+    <p class="network-status-desc">Sincronización de Red Activa</p>
+  </div>
+</div>

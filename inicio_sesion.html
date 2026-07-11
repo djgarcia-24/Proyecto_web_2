@@ -1,52 +1,108 @@
-<!DOCTYPE html>
-<html lang="es" data-theme="light" data-page-title="Autenticación">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Deezer Manager - Iniciar Sesión</title>
-    <link rel="stylesheet" href="./css/style.css">
+<!doctype html>
+<html lang="es" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deezer-Manager | Portal de Música UCAB</title>
+    <!-- FontAwesome para iconos táctiles -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Google Fonts: Inter y Syne para legibilidad y acentos premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <!-- Contenedor de Luces Aurora de fondo -->
+    <div class="aurora-container">
+      <div class="aurora-sphere aurora-1"></div>
+      <div class="aurora-sphere aurora-2"></div>
+      <div class="aurora-sphere aurora-3"></div>
+    </div>
 
-</head>
-<body>
+    <!-- Banner de estado offline (Resiliencia) -->
+    <div id="connection-banner" class="connection-banner">
+      <span id="connection-message"></span>
+    </div>
 
-    <main class="carta_autenticacion">        
-        <article class="auth-card">
-            <div class="logo">
-                <span>💿</span>
-            </div>
+    <!-- Toast Notification Box para feedback interactivo -->
+    <div id="toast" class="toast-notification glass-panel">
+      <div id="toast-icon-wrapper" class="toast-icon-wrapper">
+        <i id="toast-icon" class="fa-solid"></i>
+      </div>
+      <div class="toast-content">
+        <h4 id="toast-title"></h4>
+        <p id="toast-desc"></p>
+      </div>
+    </div>
 
-            <div id="seccion-login">
-                <h2>Iniciar Sesión</h2>
+    <!-- ==============================================
+         PANTALLA 1: FLUJO DE BIENVENIDA Y AUTENTICACIÓN (Placeholder Modular)
+         ============================================== -->
+    <div id="screen-auth" class="screen-auth">
+      <!-- Contenido inyectado desde html/auth.html -->
+    </div>
 
-                <form id="form-login">
-                    <div class="form-group">
-                        <label>Correo Electrónico</label>
-                        <input id="email_text" placeholder="usuario@correo.com" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Contraseña</label>
-                        <input id="password_text" placeholder="••••••" required>
-                    </div>
+    <!-- ==============================================
+         PANTALLA 2: DASHBOARD CORE (Buscador, Detalle y Reproductor)
+         ============================================== -->
+    <div id="screen-dashboard" class="app-shell hidden">
+      <!-- HEADER PRINCIPAL / BARRA SUPERIOR (Placeholder Modular) -->
+      <header class="app-header">
+        <!-- Contenido inyectado desde html/header.html -->
+      </header>
 
-                    <button type="submit" id="iniciar_sesion">Iniciar sesion</button>
-                </form>
+      <!-- LAYOUT PRINCIPAL (SIDEBAR + CONTENIDO) -->
+      <div class="workspace-layout">
+        <!-- SIDEBAR DE NAVEGACIÓN IZQUIERDO (Placeholder Modular) -->
+        <aside class="app-sidebar">
+          <!-- Contenido inyectado desde html/sidebar.html -->
+        </aside>
 
-                <div id="spinner" class="status-msg" hidden>
-                    <p>Validando credenciales en el servidor...</p>
-                </div>
-            </div>
+        <!-- CONTENIDO PRINCIPAL SCROLLABLE -->
+        <main id="main-content" class="main-content">
+          <!-- MENÚ FLUIDO ADAPTATIVO PARA MÓVILES (Fijo en Shell para enrutamiento rápido) -->
+          <nav class="mobile-nav-bar neu-flat">
+            <button onclick="switchView('explore')" class="mobile-nav-btn">
+              <i class="fa-solid fa-compass"></i>
+              <span>Explorar</span>
+            </button>
+            <button onclick="switchView('favorites')" class="mobile-nav-btn">
+              <i class="fa-solid fa-heart"></i>
+              <span>Colección</span>
+            </button>
+          </nav>
 
-            <div id="seccion-final" class="status-msg" hidden>
-                <div class="success-icon">✅</div>
-                <h2>Bienvenido</h2>
-                <p class="subtitle">Acceso validado correctamente. Redirigiendo...</p>
-            </div>
+          <!-- VISTA 1: EXPLORAR DEEZER (Placeholder Modular) -->
+          <section id="view-explore" class="library-view-container">
+            <!-- Contenido inyectado desde html/explore.html -->
+          </section>
 
-        </article>
-    </main>
-    <script src="./js/inicio_sesion.js"></script>
+          <!-- VISTA 2: COLECCIÓN PERSONAL (Placeholder Modular) -->
+          <section id="view-favorites" class="library-view-container hidden">
+            <!-- Contenido inyectado desde html/favorites.html -->
+          </section>
+        </main>
+      </div>
 
-</body>
+      <!-- ==============================================
+           PANTALLA 3: REPRODUCTOR DE AUDIO GLOBAL (Placeholder Modular)
+           ============================================== -->
+      <footer class="global-player glass-panel">
+        <!-- Contenido inyectado desde html/player.html -->
+      </footer>
+    </div>
+
+    <!-- REPRODUCTOR DE AUDIO HTML5 NATIVO (Fijo en Shell para referencias persistentes) -->
+    <audio id="native-audio" class="hidden"></audio>
+
+    <!-- Punto de Entrada de Script (Cargador Modular de ES6) -->
+    <script type="module" src="js/inicio_sesion.js"></script>
+  </body>
 </html>

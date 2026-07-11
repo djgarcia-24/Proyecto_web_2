@@ -1,0 +1,79 @@
+<div class="library-heading-wrap">
+  <h3>
+    <i class="fa-solid fa-heart text-rose-500 animate-pulse"></i> Mi Colección
+    Personal
+  </h3>
+  <p>
+    Tu biblioteca local de álbumes favoritos con sistema de calificaciones de
+    estrellas persistente.
+  </p>
+</div>
+
+<!-- Filtros de Colección -->
+<div class="lib-filters-bar neu-flat">
+  <span class="filters-label"
+    ><i class="fa-solid fa-filter"></i> Filtrar por Calificación:</span
+  >
+  <div class="star-filter-grid">
+    <button
+      onclick="filterFavoritesByRating(0)"
+      id="star-filter-all"
+      class="star-filter-btn active neu-flat"
+    >
+      Todos
+    </button>
+    <button
+      onclick="filterFavoritesByRating(1)"
+      id="star-filter-1"
+      class="star-filter-btn neu-flat"
+    >
+      1★
+    </button>
+    <button
+      onclick="filterFavoritesByRating(2)"
+      id="star-filter-2"
+      class="star-filter-btn neu-flat"
+    >
+      2★
+    </button>
+    <button
+      onclick="filterFavoritesByRating(3)"
+      id="star-filter-3"
+      class="star-filter-btn neu-flat"
+    >
+      3★
+    </button>
+    <button
+      onclick="filterFavoritesByRating(4)"
+      id="star-filter-4"
+      class="star-filter-btn neu-flat"
+    >
+      4★
+    </button>
+    <button
+      onclick="filterFavoritesByRating(5)"
+      id="star-filter-5"
+      class="star-filter-btn neu-flat"
+    >
+      5★
+    </button>
+  </div>
+</div>
+
+<!-- Grilla de Favoritos Calificados -->
+<div id="favorites-grid" class="albums-grid">
+  <!-- Inyectado dinámicamente -->
+</div>
+
+<!-- Estado Vacío Personalizado para Favoritos -->
+<div id="favorites-empty-state" class="empty-state neu-flat hidden">
+  <div class="empty-state-icon neu-inset text-rose-500">
+    <i class="fa-solid fa-heart-crack"></i>
+  </div>
+  <h4 class="empty-state-title">No hay favoritos guardados</h4>
+  <p class="empty-state-desc">
+    No tienes álbumes guardados en favoritos o ninguno coincide con el filtro de
+    estrellas seleccionado actualmente. ¡Explora artistas y dale Me Gusta a sus
+    canciones!
+  </p>
+</div>

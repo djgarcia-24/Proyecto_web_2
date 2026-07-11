@@ -1,56 +1,122 @@
-const URL_SERVIDOR = "https://servidor-proyecto-web-2.onrender.com";
+// ==========================================================================
+// PUNTO DE ENTRADA PRINCIPAL (Entry Point Modular)
+// ==========================================================================
+import { loadComponents } from "./loader.js";
+import { state } from "./state.js";
+import { showToast, formatTime } from "./utils.js";
+import {
+  handleLogin,
+  handleLogout,
+  finalizeLogin,
+  loadSavedData,
+} from "./auth.js";
+import {
+  showSearchHistory,
+  hideSearchHistory,
+  clearSearchHistory,
+  handleSearch,
+  searchArtist,
+  renderDiscoveryPanel,
+} from "./search.js";
+import {
+  toggleAlbumFavorite,
+  rateAlbum,
+  filterFavoritesByRating,
+  renderFavoritesView,
+  playFavoriteTrack,
+} from "./favorites.js";
+import {
+  playTrack,
+  playPopularTrack,
+  togglePlayback,
+  handleNextTrack,
+  handlePrevTrack,
+  seekTrack,
+  adjustVolume,
+  shuffleArtistTracks,
+  mixArtistTracks,
+  toggleCurrentTrackFavorite,
+} from "./player.js";
+import {
+  switchView,
+  toggleTheme,
+  triggerOfflineMode,
+  triggerOnlineMode,
+  syncOfflineQueue,
+  syncUI,
+  renderArtistPage,
+} from "./ui.js";
 
+// Exponer funciones globales al objeto window para mantener la compatibilidad
+// con los manejadores de eventos en línea definidos en el HTML (p.ej. onclick, onsubmit)
+window.handleLogin = handleLogin;
+window.handleLogout = handleLogout;
+window.showSearchHistory = showSearchHistory;
+window.hideSearchHistory = hideSearchHistory;
+window.clearSearchHistory = clearSearchHistory;
+window.handleSearch = handleSearch;
+window.searchArtist = searchArtist;
+window.toggleAlbumFavorite = toggleAlbumFavorite;
+window.rateAlbum = rateAlbum;
+window.filterFavoritesByRating = filterFavoritesByRating;
+window.playFavoriteTrack = playFavoriteTrack;
+window.playTrack = playTrack;
+window.playPopularTrack = playPopularTrack;
+window.togglePlayback = togglePlayback;
+window.handleNextTrack = handleNextTrack;
+window.handlePrevTrack = handlePrevTrack;
+window.seekTrack = seekTrack;
+window.adjustVolume = adjustVolume;
+window.shuffleArtistTracks = shuffleArtistTracks;
+window.mixArtistTracks = mixArtistTracks;
+window.toggleCurrentTrackFavorite = toggleCurrentTrackFavorite;
+window.switchView = switchView;
+window.toggleTheme = toggleTheme;
 
-async function iniciarSesion(emailUsuario, passwordUsuario) {
-    try {
-        // Configuramos el fetch para que mande un paquete POST cerrado
-        const respuesta = await fetch(`${URL_SERVIDOR}/login`, {
-            method: "POST", 
-            headers: {
-                "Content-Type": "application/json" // Le avisamos al servidor que va un JSON adentro
-            },
-            body: JSON.stringify({ 
-                email: emailUsuario, 
-                password: passwordUsuario 
-            }) // Metemos los datos dentro del remolque
-        });
+// ==============================================
+// REGISTRO DE EVENTOS DE RED Y CONEXIÓN
+// ==============================================
+window.addEventListener("offline", () => {
+  triggerOfflineMode();
+});
 
-        const datos = await respuesta.json();
+window.addEventListener("online", () => {
+  triggerOnlineMode();
+  syncOfflineQueue();
+});
 
-        if (!respuesta.ok) {
-            // Si el servidor responde con 401 (error), lanzamos el mensaje aquí
-            throw new Error(datos.error);
-        }
+// ==============================================
+// CARGA Y ARRANQUE DE PÁGINA (Window Load Event)
+// ==============================================
+window.onload = async function () {
+  try {
+    // 1. Cargar componentes HTML modulares de forma asíncrona
+    await loadComponents();
 
-        console.log("Servidor dice:", datos.mensaje);
-        alert("¡Entraste con éxito!");
-        return true
+    // 2. Ejecutar la inicialización normal de la interfaz
+    const savedTheme = localStorage.getItem("ucab_theme") || "dark";
+    document.documentElement.setAttribute("data-theme", savedTheme);
 
-    } catch (error) {
-        console.error("Error en el login:", error.message);
-        alert("Error: " + error.message);
+    const icons = document.querySelectorAll("#theme-icon, #header-theme-icon");
+    icons.forEach((icon) => {
+      icon.className =
+        savedTheme === "dark" ? "fa-solid fa-moon" : "fa-solid fa-sun";
+    });
+
+    const activeToken = localStorage.getItem("ucab_token");
+    const savedUser = localStorage.getItem("ucab_user");
+
+    if (activeToken && savedUser) {
+      finalizeLogin(savedUser, activeToken);
+    } else {
+      const authScreen = document.getElementById("screen-auth");
+      if (authScreen) authScreen.classList.remove("hidden");
     }
-}
 
-
-
-
-
-
-
-const boton = document.getElementById('iniciar_sesion');
-
-boton.addEventListener('click', function(event) {
-    event.preventDefault(); 
-
-    const email = document.getElementById('email_text').value;
-    const  password = document.getElementById('password_text').value;
-    console.log(email, password);
-
-
-    //ZONA DE SPINNER
-    if (iniciarSesion(email, password) ){
-       window.location.href = './html/buscador.html';
+    if (!navigator.onLine) {
+      triggerOfflineMode();
     }
-
-})
+  } catch (err) {
+    console.error("Fallo durante la inicialización de módulos:", err);
+  }
+};

@@ -1,0 +1,83 @@
+<!-- Información del track en reproducción -->
+<div class="player-info-column">
+  <div class="player-thumbnail-wrap neu-flat">
+    <img
+      id="player-album-art"
+      src="https://placehold.co/100/3a3a3a/ffffff?text=♫"
+      alt="Miniatura de Álbum"
+    />
+    <button
+      onclick="toggleCurrentTrackFavorite(event)"
+      class="player-favorite-overlay"
+      title="Me gusta"
+    >
+      <i id="player-heart-icon" class="fa-regular fa-heart"></i>
+    </button>
+  </div>
+  <div class="player-metadata">
+    <h4 id="player-track-title" class="player-title text-truncate">
+      Selecciona un track
+    </h4>
+    <p id="player-track-artist" class="player-artist text-truncate">
+      Pistas de Deezer
+    </p>
+  </div>
+</div>
+
+<!-- Controles multimedia principales -->
+<div class="player-controls-column">
+  <div class="player-buttons-row">
+    <button
+      onclick="handlePrevTrack()"
+      class="player-ctrl-btn neu-flat-pill"
+      title="Anterior"
+    >
+      <i class="fa-solid fa-backward-step"></i>
+    </button>
+    <button
+      onclick="togglePlayback()"
+      id="player-play-btn"
+      class="player-ctrl-btn play-pause-btn neu-flat-pill"
+      title="Play / Pause"
+    >
+      <i id="player-play-icon" class="fa-solid fa-play"></i>
+    </button>
+    <button
+      onclick="handleNextTrack()"
+      class="player-ctrl-btn neu-flat-pill"
+      title="Siguiente"
+    >
+      <i class="fa-solid fa-forward-step"></i>
+    </button>
+  </div>
+
+  <!-- Barra de tiempo y progreso seekable -->
+  <div class="player-progress-row">
+    <span id="player-time-current">0:00</span>
+    <div onclick="seekTrack(event)" class="progress-bar-container neu-inset">
+      <div id="player-progress-bar" class="progress-bar-fill"></div>
+    </div>
+    <span id="player-time-duration">0:30</span>
+  </div>
+</div>
+
+<!-- Barra de Volumen y Visualizadores -->
+<div class="player-utilities-column">
+  <div id="player-wave" class="wave-container hidden">
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+  </div>
+
+  <div class="volume-control">
+    <i id="volume-icon" class="fa-solid fa-volume-low volume-icon"></i>
+    <div
+      onclick="adjustVolume(event)"
+      class="volume-slider-container neu-inset"
+    >
+      <div id="volume-level" class="volume-slider-fill"></div>
+    </div>
+  </div>
+</div>
