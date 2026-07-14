@@ -9,18 +9,19 @@ const seccionFinal = document.getElementById("seccion-final");
 function mostrarSpinner(mensaje = "Conectando al servidor...") {
   if (loadingText) loadingText.textContent = mensaje;
   if (spinner) spinner.hidden = false;
-  if (seccionLogin)
-    seccionLogin
-      .querySelector("form, .logo, h2")
-      ?.forEach((el) => (el.style.opacity = "0.5"));
+  if (seccionLogin) {
+    // 👇 CAMBIO IMPORTANTE: usar querySelectorAll
+    const elementos = seccionLogin.querySelectorAll("form, .logo, h2");
+    elementos.forEach((el) => (el.style.opacity = "0.5"));
+  }
 }
 
 function ocultarSpinner() {
   if (spinner) spinner.hidden = true;
   if (seccionLogin) {
-    seccionLogin
-      .querySelectorAll("form, .logo, h2")
-      .forEach((el) => (el.style.opacity = "1"));
+    // Esto ya está bien (usa querySelectorAll)
+    const elementos = seccionLogin.querySelectorAll("form, .logo, h2");
+    elementos.forEach((el) => (el.style.opacity = "1"));
   }
 }
 
@@ -40,12 +41,10 @@ async function iniciarSesion(emailUsuario, passwordUsuario) {
       throw new Error(datos.error || "Error en el servidor");
     }
 
-    // Éxito
     ocultarSpinner();
     seccionLogin.hidden = true;
     seccionFinal.hidden = false;
 
-    // Redirigir después de 1.5s
     setTimeout(() => {
       window.location.href = "./html/buscador.html";
     }, 1500);
@@ -71,6 +70,5 @@ boton.addEventListener("click", function (event) {
     return;
   }
 
-  // Llamada asíncrona
   iniciarSesion(email, password);
 });
