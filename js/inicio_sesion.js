@@ -36,9 +36,6 @@ async function iniciarSesion(emailUsuario, passwordUsuario) {
 
 
 
-
-
-
 const boton = document.getElementById('iniciar_sesion');
 boton.addEventListener('click', function(event) {
     event.preventDefault(); 

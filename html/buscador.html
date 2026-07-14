@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscador de Música</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style_caja_de_artista.css">
+
 </head>
 <body data-current-nav="buscar" id="vista_buscar">
     
@@ -18,37 +20,17 @@
 
         <section class="search-wrapper" >
             <div id = "elementos_de_busqueda">
-                <input type="text" id="input-busqueda" placeholder="Artistas, álbumes o canciones..." >
-                <button type="button" id="btn-buscar" >Buscar</button>
+                <input type="text" id="input_busqueda" placeholder="Artistas, álbumes o canciones..." >
+                <button type="button" id="buscar"  >Buscar</button>
             </div>
 
            
         </section>
 
 
-    <div class="carta_artista_horizontal">
-    
-        <div class="tarjeta-imagen">
-            <img src="https://via.placeholder.com/400x400" alt="Foto del Artista">
-        </div>
 
-        <div class="tarjeta-info">
-        
-            <h2 class="artista-titulo">Nombre del Artista</h2>
-            <button type="button" class="boton_favorito" >❤️</button>
-
-            <div class="albumes">
-            
-                <div class="album-bloque">
-                    <h3>Albumes y canciones:</h3>
-                    <ul>
-                        <li>1. Pista uno</li>
-                    
-                        <!--canciones+albumes-->
-                    </ul>
-              </div>
+        <div id="resultados" class="grid-container">
             </div>
-        </div>
 
     </div>
 
@@ -56,6 +38,8 @@
 
     <script src="../js/sidebar.js"></script>
     <script src="../js/botones_laterales.js"></script>
+     <script src="../js/api.js"></script>
+
 
 </body>
 </html

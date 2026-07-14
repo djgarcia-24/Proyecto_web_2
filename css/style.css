@@ -172,7 +172,7 @@ header { width: 100%; }
     box-shadow: 0 8px 25px rgba(168, 85, 247, 0.15);
 }
 
-#input-busqueda {
+#input_busqueda {
     flex-grow: 1;
     border: none;
     background: transparent;
@@ -200,84 +200,11 @@ button:hover {
     transform: translateY(-2px);
 }
 
-/* =========================================
-   5. TARJETA DE ARTISTA (Horizontal)
-   ========================================= */
-.carta_artista_horizontal {
-    display: flex;
-    flex-direction: row;
-    gap: 40px;
-    background: var(--surface);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    width: 100%;
-    min-height: 520px;
-}
-
-/* Lado Izquierdo: Imagen */
-.tarjeta-imagen {
-    flex-shrink: 0;
-    width: 280px;
-}
-
-.tarjeta-imagen img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    border-radius: 16px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Lado Derecho: Info y Álbumes */
-.tarjeta-info {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.artista-titulo {
-    font-size: 32px;
-    font-weight: 800;
-    color: var(--text-main);
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 16px;
-    margin-bottom: 24px;
-}
-
-.albumes {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 30px;
-}
-
-.album-bloque h3 {
-    font-size: 16px;
-    color: var(--primary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 12px;
-}
-
-.album-bloque ul {
-    list-style: none;
-}
-
-.album-bloque li {
-    font-size: 15px;
-    color: var(--text-muted);
-    padding: 8px 0;
-    border-bottom: 1px dashed var(--border-color);
-}
-
-.album-bloque li:last-child {
-    border-bottom: none;
-}
 
 /* =========================================
    6. RESPONSIVE (Móviles y Tablets)
    ========================================= */
-@media (max-width: 900px) {
+@media (max-width: 768) {
     body {
         flex-direction: column; /* Apila el sidebar arriba en pantallas pequeñas */
     }
@@ -286,20 +213,6 @@ button:hover {
         width: 20%;
         height: auto;
         position: relative;
-    }
-
-    .carta_artista_horizontal {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 20px;
-        gap: 24px;
-    }
-
-    .tarjeta-info { width: 100%; }
-    
-    .albumes {
-        text-align: left; /* Mantiene la lista alineada a la izquierda */
     }
 }
 
