@@ -1,52 +1,60 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es" data-theme="light" data-page-title="Autenticación">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Deezer Manager - Iniciar Sesión</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <main class="carta_autenticacion">
+      <article class="auth-card">
+        <div class="logo">
+          <span>💿</span>
+        </div>
 
-</head>
-<body>
+        <div id="seccion-login">
+          <h2>Iniciar Sesión</h2>
 
-    <main class="carta_autenticacion">        
-        <article class="auth-card">
-            <div class="logo">
-                <span>💿</span>
+          <form id="form-login">
+            <div class="form-group">
+              <label>Correo Electrónico</label>
+              <input
+                id="email_text"
+                placeholder="usuario@correo.com"
+                required
+              />
             </div>
 
-            <div id="seccion-login">
-                <h2>Iniciar Sesión</h2>
-
-                <form id="form-login">
-                    <div class="form-group">
-                        <label>Correo Electrónico</label>
-                        <input id="email_text" placeholder="usuario@correo.com" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Contraseña</label>
-                        <input id="password_text" placeholder="••••••" required>
-                    </div>
-
-                    <button type="submit" id="iniciar_sesion">Iniciar sesion</button>
-                </form>
-
-                <div id="spinner" class="status-msg" hidden>
-                    <p>Validando credenciales en el servidor...</p>
-                </div>
+            <div class="form-group">
+              <label>Contraseña</label>
+              <input id="password_text" placeholder="••••••" required />
             </div>
 
-            <div id="seccion-final" class="status-msg" hidden>
-                <div class="success-icon">✅</div>
-                <h2>Bienvenido</h2>
-                <p class="subtitle">Acceso validado correctamente. Redirigiendo...</p>
-            </div>
+            <button type="submit" id="iniciar_sesion">Iniciar sesión</button>
+          </form>
 
-        </article>
+          <!-- ===== NUEVO SPINNER VISUAL ===== -->
+          <div id="spinner" class="status-msg" hidden>
+            <div class="loading-state">
+              <div class="ucab-spinner"></div>
+              <p id="loading-step-text" class="loading-text">
+                Conectando al servidor...
+              </p>
+              <p class="empty-state-desc">
+                Validando credenciales en tiempo real
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div id="seccion-final" class="status-msg" hidden>
+          <div class="success-icon">✅</div>
+          <h2>Bienvenido</h2>
+          <p class="subtitle">Acceso validado correctamente. Redirigiendo...</p>
+        </div>
+      </article>
     </main>
     <script src="./js/inicio_sesion.js"></script>
-
-</body>
+  </body>
 </html>

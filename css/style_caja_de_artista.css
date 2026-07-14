@@ -1,97 +1,97 @@
 /* Estilos generales oscuros para que resalten las portadas */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: #ffffff;
-    margin: 0;
-    padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: #ffffff;
+  margin: 0;
+  padding: 20px;
 }
 
 .container {
-    max-width: 1200px;
-    margin: 0 auto; /* Centra todo en la pantalla */
+  max-width: 1200px;
+  margin: 0 auto; /* Centra todo en la pantalla */
 }
 
 .search-box {
-    text-align: center;
-    margin-bottom: 40px;
+  text-align: center;
+  margin-bottom: 40px;
 }
 
 .search-box input {
-    padding: 12px;
-    width: 300px;
-    border-radius: 5px;
-    border: none;
-    font-size: 16px;
+  padding: 12px;
+  width: 300px;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
 }
 
 .search-box button {
-    padding: 12px 24px;
-    background-color: #d9a05b; /* Un tono dorado similar al de tu imagen */
-    color: black;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 16px;
+  padding: 12px 24px;
+  background-color: #d9a05b; /* Un tono dorado similar al de tu imagen */
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 /* =========================================
    EL SECRETO DEL DISEÑO EN 3 COLUMNAS 
 ========================================= */
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columnas del mismo ancho */
-    gap: 30px; /* Espacio entre las tarjetas */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas del mismo ancho */
+  gap: 30px; /* Espacio entre las tarjetas */
 }
 
 /* Estilo de cada tarjeta (estilo VIP Shop de tu imagen) */
 .tarjeta {
-    background-color: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 8px;
-    padding: 20px;
-    text-align: center;
-    transition: transform 0.2s; /* Pequeña animación al pasar el mouse */
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s; /* Pequeña animación al pasar el mouse */
 }
 
 .tarjeta:hover {
-    transform: scale(1.02);
-    border-color: #d9a05b;
+  transform: scale(1.02);
+  border-color: #d9a05b;
 }
 
 .tarjeta img {
-    width: 100%;
-    border-radius: 5px;
-    margin-bottom: 15px;
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 15px;
 }
 
 .tarjeta h3 {
-    margin: 10px 0 5px 0;
-    font-size: 1.2em;
+  margin: 10px 0 5px 0;
+  font-size: 1.2em;
 }
 
 .tarjeta p {
-    color: #888;
-    margin: 0;
-    font-size: 0.9em;
+  color: #888;
+  margin: 0;
+  font-size: 0.9em;
 }
 
 /* Indicador de carga */
 #cargando-indicador {
-    text-align: center;
-    padding: 30px;
-    font-size: 1.2em;
-    color: #d9a05b;
+  text-align: center;
+  padding: 30px;
+  font-size: 1.2em;
+  color: #d9a05b;
 }
 
 .oculto {
-    display: none !important;
+  display: none !important;
 }
 
 /* Responsividad: Si la pantalla es pequeña (celular), pasa a 1 columna */
 @media (max-width: 768px) {
-    .grid-container {
-        grid-template-columns: 1fr;
-    }
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
 }
