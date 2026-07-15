@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Favoritos</title>
+    <!-- Google Fonts: Inter y Syne para legibilidad y acentos premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css2/style.css">
+<link rel="stylesheet" href="/css2/style_caja_de_artista.css">
+</head>
+<body data-current-nav="buscar" id="vista_buscar">
+    
+    <aside class="sidebar" id="main-sidebar"></aside>
+    <main id="app-content">  
+        
+        <header>
+            <h1 class="header-title">Mis Favoritos</h1>
+            <p class="subtitle-view">Tus álbumes y artistas guardados, listos para reproducir.</p>
+        </header>
+
+        <section class="grid-favoritos">
+
+            <article class="tarjeta-fav">
+                <div class="fav-img">
+                    <img src="https://via.placeholder.com/120" alt="Portada de Daft Punk">
+                </div>
+                <div class="fav-info">
+                    <h3 class="fav-titulo">Random Access Memories</h3>
+                    <p class="fav-artista">Daft Punk</p>
+                </div>
+                <button type="button" class="boton_favorito" aria-label="Quitar de favoritos">❤️</button>
+            </article>
+
+            <article class="tarjeta-fav">
+                <div class="fav-img">
+                    <img src="https://via.placeholder.com/120" alt="Portada de Pink Floyd">
+                </div>
+                <div class="fav-info">
+                    <h3 class="fav-titulo">The Dark Side of the Moon</h3>
+                    <p class="fav-artista">Pink Floyd</p>
+                </div>
+                <button type="button" class="boton_favorito" aria-label="Quitar de favoritos">❤️</button>
+            </article>
+
+            <article class="tarjeta-fav">
+                <div class="fav-img">
+                    <img src="https://via.placeholder.com/120" alt="Portada de The Beatles">
+                </div>
+                <div class="fav-info">
+                    <h3 class="fav-titulo">Abbey Road</h3>
+                    <p class="fav-artista">The Beatles</p>
+                </div>
+                <button type="button" class="boton_favorito" aria-label="Quitar de favoritos">❤️</button>
+            </article>
+
+        </section>
+    </main>
+
+    <script src="/js2/sidebar.js"></script>
+    <script src="/js2/botones_laterales.js"></script>
+     <script src="/js2/buscar.js"></script>
+
+
+</body>
+</html

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es" data-theme="light" data-page-title="Autenticación">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deezer Manager - Iniciar Sesión</title>
+    <!-- Google Fonts: Inter y Syne para legibilidad y acentos premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css2/style.css" />
+  </head>
+  <body>
+    <main class="carta_autenticacion">
+      <article class="auth-card">
+        <div class="logo">
+          <span>💿</span>
+        </div>
+        <h1 class="brand-title">Deezer-Manager</h1>
+
+        <div id="seccion-login">
+          <h2>Iniciar Sesión</h2>
+
+          <form id="form-login">
+            <div class="form-group">
+              <label>Correo Electrónico</label>
+              <input
+                id="email_text"
+                placeholder="usuario@correo.com"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Contraseña</label>
+              <input id="password_text" placeholder="••••••" required />
+            </div>
+
+            <button type="submit" id="iniciar_sesion">Iniciar sesión</button>
+          </form>
+
+          <!-- ===== NUEVO SPINNER VISUAL ===== -->
+          <div id="spinner" class="status-msg" hidden>
+            <div class="loading-state">
+              <div class="ucab-spinner"></div>
+              <p id="loading-step-text" class="loading-text">
+                Conectando al servidor...
+              </p>
+              <p class="empty-state-desc">
+                Validando credenciales en tiempo real
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div id="seccion-final" class="status-msg" hidden>
+          <div class="success-icon">✅</div>
+          <h2>Bienvenido</h2>
+          <p class="subtitle">Acceso validado correctamente. Redirigiendo...</p>
+        </div>
+      </article>
+    </main>
+    <script src="/js2/inicio_sesion.js"></script>
+  </body>
+</html>
