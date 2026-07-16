@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Música - Favoritos</title>
+    <!-- Subimos tres niveles para llegar a la carpeta css raíz del proyecto -->
+    <link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body data-current-nav="favoritos" id="vista_favoritos">
+    
+    <aside class="sidebar" id="main-sidebar"></aside>
+    
+    <main id="app-content">  
+        <header>
+            <h1 class="header-title">Mis Favoritos</h1>
+            <p class="subtitle-view">Tus álbumes y artistas guardados, listos para reproducir.</p>
+            
+            <!-- CONTROL: Selector para filtrar por calificación -->
+            <div class="control-filtro">
+                <label for="filtro-rating">Filtrar por estrellas: </label>
+                <select id="filtro-rating">
+                    <option value="0">Todos los favoritos</option>
+                    <option value="5">⭐⭐⭐⭐⭐ (5 estrellas)</option>
+                    <option value="4">⭐⭐⭐⭐ (4 estrellas)</option>
+                    <option value="3">⭐⭐⭐ (3 estrellas)</option>
+                    <option value="2">⭐⭐ (2 estrellas)</option>
+                    <option value="1">⭐ (1 estrella)</option>
+                </select>
+            </div>
+        </header>
+
+        <!-- CONTENEDOR: Aquí se insertarán las tarjetas dinámicas de favoritos -->
+        <section class="grid-favoritos"></section>
+
+        <!-- MOLDE/PLANTILLA (Oculto al usuario) -->
+        <div id="molde-tarjeta" style="display: none;">
+            <article class="tarjeta-fav">
+                <div class="fav-img">
+                    <img src="" alt="Portada" class="imagen-molde">
+                </div>
+                <div class="fav-info">
+                    <h3 class="fav-titulo titulo-molde">Título del Álbum</h3>
+                    <p class="fav-artista artista-molde">Nombre del Artista</p>
+                    
+                    <!-- Contenedor vacío donde pondremos las estrellas -->
+                    <div class="contenedor-estrellas-molde"></div>
+                </div>
+                <div class="acciones-tarjeta">
+                    <button type="button" class="boton-reproducir-molde">▶️ Escuchar</button>
+                    <button type="button" class="eliminar-cancion-molde">❤️</button>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <!-- RUTAS CORREGIDAS SEGÚN TU ESTRUCTURA DE CARPETAS -->
+    <!-- 1. Scripts de la raíz js: Subimos tres niveles (../html -> ../Rob -> ../js) -->
+    <script src="../../../js/sidebar.js"></script>
+    <script src="../../../js/botones_laterales.js"></script>
+    
+    <!-- 2. Scripts de Rob: Como 'html/' está dentro de 'Rob/', solo subimos un nivel (../) -->
+    <script src="../gestor_sesion.js"></script>
+    <script src="../datos_locales.js"></script>
+    <script src="../sincronizador.js"></script>
+    <script src="../player.js"></script>
+    <script src="../servicio_favoritos.js"></script>
+</body>
+</html>

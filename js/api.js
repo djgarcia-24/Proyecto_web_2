@@ -53,24 +53,23 @@ function agregarATarjeta(album, grid) {
     tarjeta.className = 'tarjeta';
     
     tarjeta.innerHTML = `
-        <img src="${album.cover_medium}" alt="${album.title}">
+        <img src="${album.cover_medium}" alt="Portada de ${album.title}">
         <h3>${album.title}</h3>
         <p>${album.artist.name}</p>
-        <button type="button" id="favorito" class="boton_favorito">❤️</button>
+        <button type="button" class="boton_favorito">❤️</button>
 
     `;
+
+    // --- CORRECCIÓN IMPORTANTE ---
+    // Buscamos el botón DENTRO de la tarjeta que acabamos de crear
+    const botonFavorito = tarjeta.querySelector('.boton_favorito');
+
+    // Le asignamos el evento de clic a ESE botón en específico
+    botonFavorito.addEventListener('click', () => {
+        // Usamos la función de datos_locales.js para guardar el álbum con 0 estrellas iniciales
+        guardarFavoritoLocal(album, 0); 
+        alert(`"${album.title}" se ha añadido a tus favoritos.`);
+    });
+
     grid.appendChild(tarjeta);
 }
-
-
-
-
-
-//const gridResultados = document.getElementById('boton_fa');
-
-const favorito = document.getElementById('favorito');
-boton_fav.addEventListener('click', () => {
-
-
-
-});
