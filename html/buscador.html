@@ -7,6 +7,13 @@
       <link rel="stylesheet" href="../css/juan/style.css" />
       <link rel="stylesheet" href="../css/juan/style_caja_de_artista.css" />
       <link rel="manifest" href="../offline/manifest.json" />
+      <script>
+         // Se ubica en el <head> para redirigir de inmediato al login si el usuario 
+         // no está autenticado, evitando mostrar la interfaz privada por un instante.
+         if (!localStorage.getItem("token_seguridad")) {
+            window.location.href = "../index.html";
+         }
+      </script>
    </head>
    <body data-current-nav="buscar" id="vista_buscar">
       <div class="app-layout">

@@ -236,6 +236,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Renderizado inicial sin filtros
+    // Renderizado inicial local
     renderizarFavoritos(0);
+
+    // Sincronizar en segundo plano con el servidor si estamos online
+    if (navigator.onLine === true && typeof obtenerTokenActual === "function" && typeof descargarFavoritosDesdeServidor === "function") {
+        var tokenActivo = obtenerTokenActual();
+        if (tokenActivo) {
+            descargarFavoritosDesdeServidor(tokenActivo)
+                .then(function() {
+                    renderizarFavoritos(obtenerFiltroSeleccionado());
+                })
+                .catch(function(err) {
+                    console.log("No se pudo refrescar los favoritos en segundo plano:", err);
+                });
+        }
+    }
 });

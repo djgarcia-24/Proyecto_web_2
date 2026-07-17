@@ -1,6 +1,20 @@
 const boton_oscuro = document.getElementById('cambio_de_modo');
 const body = document.body;
 
+function actualizarTextoTema() {
+    const themeIcon = document.getElementById('theme-icon');
+    const themeText = document.getElementById('theme-text');
+    if (!themeIcon || !themeText) return;
+
+    if (body.classList.contains('oscuro')) {
+        themeIcon.textContent = "☀️";
+        themeText.textContent = "Modo Claro";
+    } else {
+        themeIcon.textContent = "🌓";
+        themeText.textContent = "Modo Oscuro";
+    }
+}
+
 // 1. AL CARGAR: Esto asegura que, si refrescas la página, se mantenga el color
 const temaGuardado = localStorage.getItem('tema');
 if (temaGuardado === 'oscuro') {
@@ -8,17 +22,19 @@ if (temaGuardado === 'oscuro') {
 }
 
 // 2. AL HACER CLIC: Esto cambia la vista Y guarda en memoria
-boton_oscuro.addEventListener('click', () => {
-    // Esto es lo que faltaba: aplica/quita la clase CSS
-    body.classList.toggle('oscuro'); 
+if (boton_oscuro) {
+    boton_oscuro.addEventListener('click', () => {
+        body.classList.toggle('oscuro'); 
 
-    // Guardamos el estado actual
-    if (body.classList.contains('oscuro')) {
-        localStorage.setItem('tema', 'oscuro');
-    } else {
-        localStorage.setItem('tema', 'claro');
-    }
-});
+        // Guardamos el estado actual
+        if (body.classList.contains('oscuro')) {
+            localStorage.setItem('tema', 'oscuro');
+        } else {
+            localStorage.setItem('tema', 'claro');
+        }
+        actualizarTextoTema();
+    });
+}
 
 
 
@@ -91,4 +107,5 @@ window.addEventListener('offline', actualizarIndicadorConexion);
 // Inicializar el indicador cuando se cargue el DOM
 document.addEventListener('DOMContentLoaded', () => {
     actualizarIndicadorConexion();
+    actualizarTextoTema();
 });

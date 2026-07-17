@@ -25,6 +25,35 @@ function ocultarSpinner() {
   }
 }
 
+async function descargarFavoritosTrasLogin(token) {
+  try {
+    const respuesta = await fetch(`${URL_SERVIDOR}/Robfavoritos`, {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    });
+    if (respuesta.ok) {
+      const serverFavs = await respuesta.json();
+      if (Array.isArray(serverFavs)) {
+        const localFavs = serverFavs.map(fav => ({
+          id: fav.id,
+          titulo: fav.title || fav.titulo,
+          artista: fav.artist || fav.artista || "Artista no disponible",
+          portada: fav.cover || fav.portada || "",
+          rating: fav.rating || 0,
+          tracks: fav.tracks || [],
+          sincronizado: true
+        }));
+        localStorage.setItem("lista_favoritos", JSON.stringify(localFavs));
+        console.log("Favoritos sincronizados tras login con éxito:", localFavs.length);
+      }
+    }
+  } catch (error) {
+    console.error("Error sincronizando favoritos tras login:", error);
+  }
+}
+
 async function iniciarSesion(emailUsuario, passwordUsuario) {
   try {
     mostrarSpinner("Validando credenciales...");
@@ -39,6 +68,20 @@ async function iniciarSesion(emailUsuario, passwordUsuario) {
 
     if (!respuesta.ok) {
       throw new Error(datos.error || "Error en el servidor");
+    }
+
+    // Guardar token y correo en localStorage
+    if (typeof guardarDatosSesion === "function") {
+      guardarDatosSesion(datos.token, emailUsuario);
+    } else {
+      localStorage.setItem("token_seguridad", datos.token);
+      localStorage.setItem("correo_activo", emailUsuario);
+    }
+
+    // Mostrar feedback de descarga de biblioteca
+    mostrarSpinner("Sincronizando biblioteca...");
+    if (navigator.onLine) {
+      await descargarFavoritosTrasLogin(datos.token);
     }
 
     ocultarSpinner();

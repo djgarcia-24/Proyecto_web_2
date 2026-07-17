@@ -6,6 +6,43 @@
 
 var URL_SERVIDOR = "https://servidor-proyecto-web-2.onrender.com";
 
+// Función global para descargar favoritos desde el servidor y persistirlos localmente
+window.descargarFavoritosDesdeServidor = function(token) {
+    if (!token || navigator.onLine === false) {
+        return Promise.reject("Sin conexión o sin token.");
+    }
+    return fetch(URL_SERVIDOR + "/Robfavoritos", {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    })
+    .then(function(respuesta) {
+        if (respuesta.ok === true) {
+            return respuesta.json();
+        }
+        throw new Error("Error en la descarga de favoritos del servidor.");
+    })
+    .then(function(serverFavs) {
+        if (Array.isArray(serverFavs)) {
+            var localFavs = serverFavs.map(function(fav) {
+                return {
+                    id: fav.id,
+                    titulo: fav.title || fav.titulo,
+                    artista: fav.artist || fav.artista || "Artista no disponible",
+                    portada: fav.cover || fav.portada || "",
+                    rating: fav.rating || 0,
+                    tracks: fav.tracks || [],
+                    sincronizado: true
+                };
+            });
+            localStorage.setItem("lista_favoritos", JSON.stringify(localFavs));
+            console.log("Favoritos sincronizados desde el servidor: " + localFavs.length);
+            return localFavs;
+        }
+    });
+};
+
 // Aseguramos que la función sea visible globalmente en el navegador
 window.sincronizarConServidor = function() {
     if (navigator.onLine === false) { 
