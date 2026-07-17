@@ -223,6 +223,9 @@ async function cargarDetalleArtista(artista) {
                             console.error("Error obteniendo tracks para persistir favorito:", errTracks);
                         }
 
+                        // Guardamos el nombre del artista en el objeto álbum para persistirlo correctamente
+                        album.artista = artista.name;
+
                         guardarFavoritoLocal(album, 0, tracksParaGuardar);
                     }
                 });

@@ -343,7 +343,7 @@ body.oscuro body::after {
    background-color: var(--bg-surface);
    box-shadow: var(--shadow-inset);
    border: 1px solid var(--border-color);
-   margin-bottom: 0px;
+   margin-bottom: 25px;
 }
 #app-content header .header-title {
    font-size: 32px;
@@ -370,6 +370,7 @@ body.oscuro #app-content header .header-title {
    ========================================= */
 .search-wrapper {
    width: 100%;
+   margin-bottom: 30px;
 }
 #elementos_de_busqueda {
    display: flex;
