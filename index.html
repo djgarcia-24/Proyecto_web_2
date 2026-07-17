@@ -1,78 +1,89 @@
 <!doctype html>
 <html lang="es" data-theme="light" data-page-title="Autenticación">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Deezer Manager - Iniciar Sesión</title>
-    <link rel="stylesheet" href="./css/juan/style.css" />
-    <link rel="manifest" href="./offline/manifest.json" />
-    <script>
-      // Se ubica en el <head> para que la redirección sea inmediata y
-      // evite que se renderice (parpadee) la pantalla de login si ya hay sesión activa.
-      if (localStorage.getItem("token_seguridad")) {
-        window.location.href = "./html/buscador.html";
-      }
-    </script>
-  </head>
-  <body>
-    <main class="carta_autenticacion">
-      <article class="auth-card">
-        <div class="logo">
-          <span>💿</span>
-        </div>
-
-        <div id="seccion-login">
-          <h2>Iniciar Sesión</h2>
-
-          <form id="form-login">
-            <div class="form-group">
-              <label>Correo Electrónico</label>
-              <input
-                id="email_text"
-                placeholder="usuario@correo.com"
-                required
-              />
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Deezer Manager - Iniciar Sesión</title>
+      <link rel="stylesheet" href="./css/juan/style.css" />
+      <script>
+         // Se ubica en el <head> para que la redirección sea inmediata y
+         // evite que se renderice (parpadee) la pantalla de login si ya hay sesión activa.
+         if (localStorage.getItem("token_seguridad")) {
+            window.location.href = "./html/buscador.html";
+         }
+      </script>
+   </head>
+   <body>
+      <main class="carta_autenticacion">
+         <article class="auth-card">
+            <div class="logo">
+               <span>💿</span>
             </div>
 
-            <div class="form-group">
-              <label>Contraseña</label>
-              <input id="password_text" placeholder="••••••" required />
+            <div id="seccion-login">
+               <h2>Iniciar Sesión</h2>
+
+               <form id="form-login">
+                  <div class="form-group">
+                     <label>Correo Electrónico</label>
+                     <input
+                        id="email_text"
+                        placeholder="usuario@correo.com"
+                        required
+                     />
+                  </div>
+
+                  <div class="form-group">
+                     <label>Contraseña</label>
+                     <input id="password_text" placeholder="••••••" required />
+                  </div>
+
+                  <button type="submit" id="iniciar_sesion">
+                     Iniciar sesión
+                  </button>
+               </form>
+
+               <!-- ===== NUEVO SPINNER VISUAL ===== -->
+               <div id="spinner" class="status-msg" hidden>
+                  <div class="loading-state">
+                     <div class="ucab-spinner"></div>
+                     <p id="loading-step-text" class="loading-text">
+                        Conectando al servidor...
+                     </p>
+                     <p class="empty-state-desc">
+                        Validando credenciales en tiempo real
+                     </p>
+                  </div>
+               </div>
             </div>
 
-            <button type="submit" id="iniciar_sesion">Iniciar sesión</button>
-          </form>
-
-          <!-- ===== NUEVO SPINNER VISUAL ===== -->
-          <div id="spinner" class="status-msg" hidden>
-            <div class="loading-state">
-              <div class="ucab-spinner"></div>
-              <p id="loading-step-text" class="loading-text">
-                Conectando al servidor...
-              </p>
-              <p class="empty-state-desc">
-                Validando credenciales en tiempo real
-              </p>
+            <div id="seccion-final" class="status-msg" hidden>
+               <div class="success-icon">✅</div>
+               <h2>Bienvenido</h2>
+               <p class="subtitle">
+                  Acceso validado correctamente. Redirigiendo...
+               </p>
             </div>
-          </div>
-        </div>
-
-        <div id="seccion-final" class="status-msg" hidden>
-          <div class="success-icon">✅</div>
-          <h2>Bienvenido</h2>
-          <p class="subtitle">Acceso validado correctamente. Redirigiendo...</p>
-        </div>
-      </article>
-    </main>
-    <script src="./js/gestor_sesion.js"></script>
-    <script src="./js/inicio_sesion.js"></script>
-    <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("./sw.js")
-            .then((reg) => console.log("Service Worker registrado con scope:", reg.scope))
-            .catch((err) => console.error("Error al registrar Service Worker:", err));
-        });
-      }
-    </script>
-  </body>
+         </article>
+      </main>
+      <script src="./js/gestor_sesion.js"></script>
+      <script src="./js/inicio_sesion.js"></script>
+      <script>
+         if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+               navigator.serviceWorker
+                  .register("./sw.js")
+                  .then((reg) =>
+                     console.log(
+                        "Service Worker registrado con scope:",
+                        reg.scope,
+                     ),
+                  )
+                  .catch((err) =>
+                     console.error("Error al registrar Service Worker:", err),
+                  );
+            });
+         }
+      </script>
+   </body>
 </html>
