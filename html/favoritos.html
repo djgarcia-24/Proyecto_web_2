@@ -11,64 +11,68 @@
    </head>
    <!-- Corregido: Ahora apunta a "favoritos" en vez de "buscar" -->
    <body data-current-nav="favoritos" id="vista_favoritos">
-      <aside class="sidebar" id="main-sidebar"></aside>
+      <div class="app-layout">
+         <aside class="sidebar" id="main-sidebar"></aside>
 
-      <main id="app-content">
-         <header class="view-header">
-            <div class="header-top">
-               <h1 class="header-title">Mis Favoritos</h1>
-               <div id="indicador-conexion" class="badge-conexion">
-                  <span class="badge-dot"></span> <span class="badge-text">Detectando conexión...</span>
+         <main id="app-content">
+            <header class="view-header">
+               <div class="header-top">
+                  <h1 class="header-title">Mis Favoritos</h1>
+                  <div id="indicador-conexion" class="badge-conexion">
+                     <span class="badge-dot"></span> <span class="badge-text">Detectando conexión...</span>
+                  </div>
                </div>
+               <p class="subtitle-view">
+                  Tus álbumes y artistas guardados, listos para reproducir.
+               </p>
+
+               <!-- Agregamos el selector de estrellas dinámico que estaba en Robfavoritos.html -->
+               <div class="control-filtro">
+                  <label for="filtro-rating">Filtrar por estrellas: </label>
+                  <select id="filtro-rating">
+                     <option value="0">Todos los favoritos</option>
+                     <option value="5">⭐⭐⭐⭐⭐ (5 estrellas)</option>
+                     <option value="4">⭐⭐⭐⭐ (4 estrellas)</option>
+                     <option value="3">⭐⭐⭐ (3 estrellas)</option>
+                     <option value="2">⭐⭐ (2 estrellas)</option>
+                     <option value="1">⭐ (1 estrella)</option>
+                  </select>
+               </div>
+            </header>
+
+            <!-- Contenedor vacío: JavaScript inyectará las tarjetas aquí -->
+            <section class="grid-favoritos"></section>
+
+            <!-- Molde/Plantilla oculto para generar las tarjetas desde JS -->
+            <div id="molde-tarjeta" style="display: none">
+               <article class="tarjeta-fav">
+                  <div class="fav-img">
+                     <img src="" alt="Portada" class="imagen-molde" />
+                  </div>
+                  <div class="fav-info">
+                     <h3 class="fav-titulo titulo-molde">Título del Álbum</h3>
+                     <p class="fav-artista artista-molde">Nombre del Artista</p>
+
+                     <!-- Contenedor vacío para las estrellas interactivas -->
+                     <div class="contenedor-estrellas-molde"></div>
+                  </div>
+                  <div class="acciones-tarjeta">
+                     <button type="button" class="boton-reproducir-molde">
+                        Ver Canciones
+                     </button>
+                     <button
+                        type="button"
+                        class="boton_favorito eliminar-cancion-molde"
+                     >
+                        ❤️
+                     </button>
+                  </div>
+                  <!-- Contenedor para desplegar la lista de pistas del álbum -->
+                  <div class="acordeon-tracks-fav" style="display: none; width: 100%; text-align: left; margin-top: 12px; border-top: 1px solid var(--border-opacity); padding-top: 10px;"></div>
+               </article>
             </div>
-            <p class="subtitle-view">
-               Tus álbumes y artistas guardados, listos para reproducir.
-            </p>
-
-            <!-- Agregamos el selector de estrellas dinámico que estaba en Robfavoritos.html -->
-            <div class="control-filtro">
-               <label for="filtro-rating">Filtrar por estrellas: </label>
-               <select id="filtro-rating">
-                  <option value="0">Todos los favoritos</option>
-                  <option value="5">⭐⭐⭐⭐⭐ (5 estrellas)</option>
-                  <option value="4">⭐⭐⭐⭐ (4 estrellas)</option>
-                  <option value="3">⭐⭐⭐ (3 estrellas)</option>
-                  <option value="2">⭐⭐ (2 estrellas)</option>
-                  <option value="1">⭐ (1 estrella)</option>
-               </select>
-            </div>
-         </header>
-
-         <!-- Contenedor vacío: JavaScript inyectará las tarjetas aquí -->
-         <section class="grid-favoritos"></section>
-
-         <!-- Molde/Plantilla oculto para generar las tarjetas desde JS -->
-         <div id="molde-tarjeta" style="display: none">
-            <article class="tarjeta-fav">
-               <div class="fav-img">
-                  <img src="" alt="Portada" class="imagen-molde" />
-               </div>
-               <div class="fav-info">
-                  <h3 class="fav-titulo titulo-molde">Título del Álbum</h3>
-                  <p class="fav-artista artista-molde">Nombre del Artista</p>
-
-                  <!-- Contenedor vacío para las estrellas interactivas -->
-                  <div class="contenedor-estrellas-molde"></div>
-               </div>
-               <div class="acciones-tarjeta">
-                  <button type="button" class="boton-reproducir-molde">
-                     ▶️ Escuchar
-                  </button>
-                  <button
-                     type="button"
-                     class="boton_favorito eliminar-cancion-molde"
-                  >
-                     ❤️
-                  </button>
-               </div>
-            </article>
-         </div>
-      </main>
+         </main>
+      </div>
 
       <!-- SCRIPTS CON LAS RUTAS RELATIVAS CORREGIDAS PARA LA CARPETA html/ -->
       <!-- 1. Scripts globales en js/ -->

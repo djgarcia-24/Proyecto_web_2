@@ -20,35 +20,37 @@ function guardarFavoritos(listaParaGuardar) {
 }
 
 // --- 3. AGREGAR O ACTUALIZAR UNA CANCIÓN FAVORITA ---
-function guardarFavoritoLocal(album, calificacion) {
+function guardarFavoritoLocal(album, calificacion, tracks = null) {
     var favoritos = obtenerFavoritos();
 
     // Verificamos de forma segura la estructura del objeto entrante
     const nombreArtista = (album.artist && album.artist.name) ? album.artist.name : (album.artista || "Artista no disponible");
     const tituloCancion = album.title || album.titulo;
 
-    var nuevaCancion = {
-        id: album.id,
-        titulo: tituloCancion,
-        artista: nombreArtista,
-        portada: album.cover_medium || album.portada,
-        audio: album.preview || album.audio, 
-        rating: calificacion,               
-        sincronizado: false                 
-    };
-
     var posicionEncontrada = -1;
     for (var i = 0; i < favoritos.length; i = i + 1) {
-        if (favoritos[i].id === album.id) {
+        if (String(favoritos[i].id) === String(album.id)) {
             posicionEncontrada = i;
         }
     }
 
     if (posicionEncontrada > -1) {
         favoritos[posicionEncontrada].rating = calificacion;
+        if (tracks !== null) {
+            favoritos[posicionEncontrada].tracks = tracks;
+        }
         favoritos[posicionEncontrada].sincronizado = false;
     } else {
-        favoritos.push(nuevaCancion);
+        var nuevoFavorito = {
+            id: album.id,
+            titulo: tituloCancion,
+            artista: nombreArtista,
+            portada: album.cover_medium || album.portada,
+            rating: calificacion,               
+            tracks: tracks || [],
+            sincronizado: false                 
+        };
+        favoritos.push(nuevoFavorito);
     }
 
     guardarFavoritos(favoritos);

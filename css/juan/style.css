@@ -101,10 +101,26 @@ body {
       background-color 0.5s ease,
       color 0.5s ease;
    display: flex;
-   flex-direction: row; /* Desktop is row */
-   min-height: 100vh;
+   flex-direction: column;
+   height: 100vh;
    position: relative;
-   overflow-x: hidden;
+   overflow: hidden;
+}
+
+.app-layout {
+   display: flex;
+   flex-direction: row;
+   flex: 1;
+   min-height: 0;
+   width: 100%;
+   overflow: hidden;
+}
+
+main#app-content {
+   flex: 1;
+   height: 100%;
+   overflow-y: auto;
+   padding-bottom: 40px;
 }
 
 /* Esferas de luz ambientadora en las esquinas para generar dimensión */
@@ -209,7 +225,7 @@ body.oscuro body::after {
    ========================================= */
 .sidebar {
    width: 260px;
-   height: 100vh;
+   height: 100%;
    flex-shrink: 0;
    position: sticky;
    top: 0;
@@ -827,6 +843,9 @@ button:active {
    ========================================= */
 @media (max-width: 768px) {
    body {
+      flex-direction: column;
+   }
+   .app-layout {
       flex-direction: column;
    }
    .sidebar {

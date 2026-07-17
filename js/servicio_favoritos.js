@@ -1,18 +1,12 @@
 // =========================================================================
 // SERVICIO DE FAVORITOS (servicio_favoritos.js)
-// Este archivo toma el molde del HTML, lo duplica y lo llena con la
-// información de tus canciones favoritas.
+// Gestión y renderizado de álbumes favoritos con calificaciones y canciones.
 // =========================================================================
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    // 1. Buscamos el contenedor donde se van a mostrar los favoritos en pantalla
     const gridFavoritos = document.querySelector(".grid-favoritos");
-
-    // 2. Buscamos nuestro selector de filtro de estrellas
     const selectorFiltro = document.getElementById("filtro-rating");
-
-    // 3. Buscamos el molde original de la tarjeta que dejamos preparado en el HTML
     var moldeOriginal = document.getElementById("molde-tarjeta");
 
     // SEGURIDAD: Si no estamos en la página de favoritos, salimos
@@ -22,142 +16,211 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- FUNCIÓN PARA DIBUJAR LAS TARJETAS EN PANTALLA ---
     function renderizarFavoritos(calificacionFiltro) {
-        // Limpiamos la pantalla para no duplicar tarjetas viejas
         gridFavoritos.innerHTML = "";
 
-        // Obtenemos los favoritos guardados en la memoria local (de datos_locales.js)
+        // Obtener favoritos guardados localmente
         const favoritos = obtenerFavoritos();
 
         if (!favoritos || favoritos.length === 0) {
-            gridFavoritos.innerHTML = '<p class="empty-state" style="grid-column: 1 / -1; text-align: center; color: #888; padding: 20px;">No tienes canciones guardadas en tus favoritos.</p>';
+            gridFavoritos.innerHTML = `
+                <div class="empty-state" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px 20px;">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">💿❤️</div>
+                    <h3 style="font-family: var(--font-syne); color: var(--text-main); font-size: 1.2rem; margin-bottom: 5px;">Tu colección privada está vacía</h3>
+                    <p style="font-size: 0.9rem;">Busca tus artistas favoritos y guarda sus álbumes para verlos aquí.</p>
+                </div>
+            `;
             return;
         }
 
-        // Recorremos cada canción favorita guardada
-        favoritos.forEach(function(cancion) {
-            // Si el usuario aplicó un filtro y la canción no coincide con la calificación, la saltamos
-            if (calificacionFiltro > 0 && cancion.rating !== calificacionFiltro) {
-                return; 
+        // Filtrar favoritos
+        const favoritosFiltrados = favoritos.filter(album => {
+            if (calificacionFiltro > 0) {
+                return album.rating === calificacionFiltro;
             }
+            return true;
+        });
 
-            // --- NUEVO MÉTODO DE CLONACIÓN DIRECTA DEL ARTÍCULO ---
-            // En lugar de clonar el div contenedor "molde-tarjeta", buscamos directamente el <article> interno
+        if (favoritosFiltrados.length === 0) {
+            gridFavoritos.innerHTML = `
+                <div class="empty-state" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px 20px;">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">⭐🔍</div>
+                    <h3 style="font-family: var(--font-syne); color: var(--text-main); font-size: 1.2rem; margin-bottom: 5px;">Sin resultados para el filtro</h3>
+                    <p style="font-size: 0.9rem;">No tienes ningún álbum calificado con ${calificacionFiltro} estrellas.</p>
+                </div>
+            `;
+            return;
+        }
+
+        favoritosFiltrados.forEach(function(album) {
             const articuloMolde = moldeOriginal.querySelector("article");
             if (!articuloMolde) return;
 
-            // Clonamos únicamente el elemento <article> (así no arrastramos el "display: none" del div padre)
+            // Clonar artículo molde
             const nuevaTarjeta = articuloMolde.cloneNode(true);
-
-            // Nos aseguramos al 100% de que el elemento clonado sea visible en pantalla
             nuevaTarjeta.style.display = "flex"; 
             nuevaTarjeta.style.visibility = "visible";
             nuevaTarjeta.style.opacity = "1";
 
-            // Buscamos los elementos internos del clon para cambiar sus datos por los reales
+            // Encontrar elementos internos
             const imagen = nuevaTarjeta.querySelector(".imagen-molde");
             const titulo = nuevaTarjeta.querySelector(".titulo-molde");
             const artista = nuevaTarjeta.querySelector(".artista-molde");
-            const botonReproducir = nuevaTarjeta.querySelector(".boton-reproducir-molde");
-            const botonEliminar = nuevaTarjeta.querySelector(".eliminar-cancion-molde");
+            const btnToggleTracks = nuevaTarjeta.querySelector(".boton-reproducir-molde");
+            const btnEliminar = nuevaTarjeta.querySelector(".eliminar-cancion-molde");
             const contenedorEstrellas = nuevaTarjeta.querySelector(".contenedor-estrellas-molde");
+            const contenedorTracks = nuevaTarjeta.querySelector(".acordeon-tracks-fav");
 
-            // Rellenamos el clon con la información real de la canción
+            // Cargar datos
             if (imagen) {
-                imagen.src = cancion.portada || "https://via.placeholder.com/120";
+                imagen.src = album.portada || "../css/placeholder.png";
             }
             if (titulo) {
-                titulo.textContent = cancion.titulo;
+                titulo.textContent = album.titulo;
             }
             if (artista) {
-                artista.textContent = cancion.artista;
+                artista.textContent = album.artista;
             }
 
-            // Asignamos atributos de datos
-            if (botonReproducir) {
-                botonReproducir.setAttribute("data-audio", cancion.audio || "");
-            }
-            if (botonEliminar) {
-                botonEliminar.setAttribute("data-id", cancion.id);
-            }
-
-            // --- DIBUJAR LAS ESTRELLAS ---
+            // --- RENDERIZAR ESTRELLAS INTERACTIVAS (1-5) ---
             if (contenedorEstrellas) {
-                contenedorEstrellas.innerHTML = ""; // Limpiamos el contenedor
+                contenedorEstrellas.innerHTML = "";
                 for (let estrella = 1; estrella <= 5; estrella++) {
                     const elementoEstrella = document.createElement("span");
                     elementoEstrella.textContent = "★";
                     elementoEstrella.className = "estrella";
                     elementoEstrella.setAttribute("data-valor", estrella);
-                    elementoEstrella.setAttribute("data-id", cancion.id);
+                    elementoEstrella.setAttribute("data-id", album.id);
                     elementoEstrella.style.cursor = "pointer";
+                    elementoEstrella.style.fontSize = "1.2rem";
+                    elementoEstrella.style.transition = "var(--transition-smooth)";
 
-                    // Coloreamos las estrellas activas
-                    if (estrella <= cancion.rating) {
+                    if (estrella <= album.rating) {
                         elementoEstrella.classList.add("activa");
                         elementoEstrella.style.color = "#ffcc00"; 
                     } else {
                         elementoEstrella.style.color = "#ccc"; 
                     }
 
+                    // Evento al hacer clic en las estrellas
+                    elementoEstrella.addEventListener("click", function (evento) {
+                        const idAlbum = evento.target.getAttribute("data-id");
+                        const nuevaCalificacion = parseInt(evento.target.getAttribute("data-valor"));
+
+                        const listaFavs = obtenerFavoritos();
+                        const albumEncontrado = listaFavs.find(fav => String(fav.id) === String(idAlbum));
+
+                        if (albumEncontrado) {
+                            guardarFavoritoLocal(albumEncontrado, nuevaCalificacion);
+                            // Refrescar renderizado con el filtro actual
+                            const filtroActual = obtenerFiltroSeleccionado();
+                            renderizarFavoritos(filtroActual);
+                        }
+                    });
+
                     contenedorEstrellas.appendChild(elementoEstrella);
                 }
             }
 
-            // Acción al hacer clic en "Eliminar"
-            if (botonEliminar) {
-                botonEliminar.addEventListener("click", function (evento) {
-                    const idParaBorrar = evento.currentTarget.getAttribute("data-id");
-                    eliminarFavoritoLocal(idParaBorrar);
-
-                    // Refrescamos la pantalla usando el filtro actual
+            // --- ACCIÓN ELIMINAR DE FAVORITOS ---
+            if (btnEliminar) {
+                btnEliminar.addEventListener("click", function () {
+                    eliminarFavoritoLocal(album.id);
                     const filtroActual = obtenerFiltroSeleccionado();
                     renderizarFavoritos(filtroActual);
                 });
             }
 
-            // Acción al hacer clic en "Escuchar" (Pasando el botón como referencia)
-            if (botonReproducir) {
-                botonReproducir.addEventListener("click", function (evento) {
-                    const urlAudio = evento.currentTarget.getAttribute("data-audio");
-                    const boton = evento.currentTarget;
-                    
-                    if (window.AudioPlayer) {
-                        window.AudioPlayer.reproducir(urlAudio, boton);
+            // --- CONFIGURAR DESPLEGABLE DE CANCIONES (TRACKS) ---
+            if (btnToggleTracks && contenedorTracks) {
+                // Pre-renderizar las canciones dentro del contenedor oculto
+                renderizarTracksLocales(album, contenedorTracks);
+
+                btnToggleTracks.addEventListener("click", function () {
+                    const estaOculto = contenedorTracks.style.display === "none";
+                    if (estaOculto) {
+                        contenedorTracks.style.display = "block";
+                        btnToggleTracks.textContent = "Ocultar Canciones";
+                        btnToggleTracks.style.backgroundColor = "var(--color-primary-hover)";
                     } else {
-                        console.error("El objeto global window.AudioPlayer no está cargado.");
+                        contenedorTracks.style.display = "none";
+                        btnToggleTracks.textContent = "Ver Canciones";
+                        btnToggleTracks.style.backgroundColor = "var(--color-primary)";
                     }
                 });
             }
 
-            // Funcionalidad de clic para calificar con estrellas
-            if (contenedorEstrellas) {
-                const estrellasCreadas = contenedorEstrellas.querySelectorAll(".estrella");
-                estrellasCreadas.forEach(function(estrella) {
-                    estrella.addEventListener("click", function (evento) {
-                        const idCancion = evento.target.getAttribute("data-id");
-                        const nuevaCalificacion = parseInt(evento.target.getAttribute("data-valor"));
-
-                        const listaFavs = obtenerFavoritos();
-                        const cancionEncontrada = listaFavs.find(fav => String(fav.id) === String(idCancion));
-
-                        if (cancionEncontrada) {
-                            // Guardamos la calificación actualizada
-                            guardarFavoritoLocal(cancionEncontrada, nuevaCalificacion);
-
-                            // Refrescamos la pantalla
-                            const filtroActual = obtenerFiltroSeleccionado();
-                            renderizarFavoritos(filtroActual);
-                        }
-                    });
-                });
-            }
-
-            // Añadimos el nuevo <article> directamente al grid real de favoritos
             gridFavoritos.appendChild(nuevaTarjeta);
         });
+
+        // Sincronizar estados de reproducción de botones con la canción activa
+        if (window.AudioPlayer) {
+            window.AudioPlayer.actualizarTodosLosBotonesDePagina();
+        }
     }
 
-    // --- FUNCIÓN AUXILIAR PARA OBTENER EL FILTRO SELECCIONADO ---
+    // --- FUNCIÓN AUXILIAR PARA RENDERIZAR CANCIONES DESDE LOCALSTORAGE ---
+    function renderizarTracksLocales(album, contenedor) {
+        contenedor.innerHTML = "";
+
+        if (!album.tracks || album.tracks.length === 0) {
+            contenedor.innerHTML = `<p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 5px;">No hay canciones guardadas para este álbum.</p>`;
+            return;
+        }
+
+        const lista = document.createElement("ol");
+        lista.className = "lista-canciones-album";
+        lista.style.listStyle = "none";
+        lista.style.padding = "0";
+        lista.style.margin = "0";
+
+        album.tracks.forEach((track, index) => {
+            const fila = document.createElement("li");
+            fila.className = "cancion-fila";
+            fila.style.display = "flex";
+            fila.style.justifyContent = "space-between";
+            fila.style.alignItems = "center";
+            fila.style.padding = "6px 0";
+            fila.style.borderBottom = "1px solid var(--border-opacity)";
+            fila.style.fontSize = "0.85rem";
+
+            const mins = Math.floor((track.duracion || track.duration || 0) / 60);
+            const secs = Math.floor((track.duracion || track.duration || 0) % 60).toString().padStart(2, '0');
+            const duracionStr = `${mins}:${secs}`;
+
+            fila.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 8px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    <span style="color: var(--text-muted); font-size: 0.75rem; width: 14px; text-align: right;">${index + 1}.</span>
+                    <span class="cancion-titulo" style="font-weight: 500; overflow: hidden; text-overflow: ellipsis;">${track.titulo || track.title}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-left: 10px;">
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">${duracionStr}</span>
+                    <button type="button" class="btn-play-track neu-btn-active" data-audio="${track.preview}" style="background: var(--color-primary); color: var(--color-btn-text); border: none; padding: 3px 8px; border-radius: var(--radius-pill); font-size: 0.7rem; cursor: pointer; font-weight: 600; min-width: 70px;">▶️ Escuchar</button>
+                </div>
+            `;
+
+            const playBtn = fila.querySelector(".btn-play-track");
+            playBtn.addEventListener("click", () => {
+                const trackInfo = {
+                    id: track.id,
+                    titulo: track.titulo || track.title,
+                    artista: album.artista,
+                    portada: album.portada,
+                    audio: track.preview
+                };
+                if (window.AudioPlayer) {
+                    window.AudioPlayer.reproducir(track.preview, trackInfo);
+                } else {
+                    console.error("AudioPlayer no cargado.");
+                }
+            });
+
+            lista.appendChild(fila);
+        });
+
+        contenedor.appendChild(lista);
+    }
+
+    // --- OBTENER EL FILTRO SELECCIONADO ---
     function obtenerFiltroSeleccionado() {
         if (selectorFiltro) {
             return parseInt(selectorFiltro.value);
@@ -173,6 +236,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Al cargar la página, mostramos todos los favoritos sin ningún filtro
+    // Renderizado inicial sin filtros
     renderizarFavoritos(0);
 });

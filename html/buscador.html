@@ -9,31 +9,39 @@
       <link rel="manifest" href="../offline/manifest.json" />
    </head>
    <body data-current-nav="buscar" id="vista_buscar">
-      <aside class="sidebar" id="main-sidebar"></aside>
+      <div class="app-layout">
+         <aside class="sidebar" id="main-sidebar"></aside>
 
-      <main class="buscador" id="app-content">
-         <header class="view-header">
-            <div class="header-top">
-               <h1 class="header-title">Explorar Música</h1>
-               <div id="indicador-conexion" class="badge-conexion">
-                  <span class="badge-dot"></span> <span class="badge-text">Detectando conexión...</span>
-               </div>
+         <main class="buscador" id="app-content">
+            <!-- Sección Principal del Buscador -->
+            <div id="buscador-main">
+               <header class="view-header">
+                  <div class="header-top">
+                     <h1 class="header-title">Explorar Música</h1>
+                     <div id="indicador-conexion" class="badge-conexion">
+                        <span class="badge-dot"></span> <span class="badge-text">Detectando conexión...</span>
+                     </div>
+                  </div>
+               </header>
+
+               <section class="search-wrapper">
+                  <div id="elementos_de_busqueda">
+                     <input
+                        type="text"
+                        id="input_busqueda"
+                        placeholder="Busca tus artistas favoritos..."
+                     />
+                     <button type="button" id="buscar">Buscar</button>
+                  </div>
+               </section>
+
+               <div id="resultados" class="grid-container"></div>
             </div>
-         </header>
 
-         <section class="search-wrapper">
-            <div id="elementos_de_busqueda">
-               <input
-                  type="text"
-                  id="input_busqueda"
-                  placeholder="Artistas, álbumes o canciones..."
-               />
-               <button type="button" id="buscar">Buscar</button>
-            </div>
-         </section>
-
-         <div id="resultados" class="grid-container"></div>
-      </main>
+            <!-- Sección Oculta del Detalle del Artista -->
+            <div id="detalle-artista" class="oculto" style="display: none;"></div>
+         </main>
+      </div>
 
       <script src="../js/sidebar.js"></script>
       <script src="../js/botones_laterales.js"></script>
