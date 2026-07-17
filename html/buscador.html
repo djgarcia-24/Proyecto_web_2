@@ -6,13 +6,19 @@
       <title>Buscador de Música</title>
       <link rel="stylesheet" href="../css/juan/style.css" />
       <link rel="stylesheet" href="../css/juan/style_caja_de_artista.css" />
+      <link rel="manifest" href="../offline/manifest.json" />
    </head>
    <body data-current-nav="buscar" id="vista_buscar">
       <aside class="sidebar" id="main-sidebar"></aside>
 
       <main class="buscador" id="app-content">
-         <header>
-            <h1 class="header-title">Explorar Música</h1>
+         <header class="view-header">
+            <div class="header-top">
+               <h1 class="header-title">Explorar Música</h1>
+               <div id="indicador-conexion" class="badge-conexion">
+                  <span class="badge-dot"></span> <span class="badge-text">Detectando conexión...</span>
+               </div>
+            </div>
          </header>
 
          <section class="search-wrapper">
@@ -38,5 +44,14 @@
       <script src="../js/sincronizador.js"></script>
       <script src="../js/player.js"></script>
       <script src="../js/servicio_favoritos.js"></script>
+      <script>
+         if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+               navigator.serviceWorker.register("../sw.js")
+                  .then((reg) => console.log("Service Worker registrado con scope:", reg.scope))
+                  .catch((err) => console.error("Error al registrar Service Worker:", err));
+            });
+         }
+      </script>
    </body>
 </html>

@@ -34,7 +34,7 @@ function cerrarSesionSegura() {
     // localStorage.clear();
 
     // Redireccionamos (enviamos) al usuario de vuelta a la pantalla para iniciar sesión
-    window.location.href = "../inicio_sesion.html";
+    window.location.href = "../index.html";
 }
 
 // --- 4. CONECTAR CON EL BOTÓN DEL MENÚ LATERAL (SIDEBAR) ---

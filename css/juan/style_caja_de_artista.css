@@ -17,6 +17,7 @@
   text-align: center;
   transition: var(--transition-smooth);
   box-shadow: var(--shadow-flat);
+  position: relative; /* Base para el posicionamiento absoluto del botón */
 }
 
 .tarjeta:hover {
@@ -46,7 +47,28 @@
 }
 
 .tarjeta .boton_favorito {
-  margin-top: 12px;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  z-index: 10;
+  margin-top: 0;
+  box-shadow: none; /* Elimina la sombra neumórfica y el brillo blanco */
+}
+
+.tarjeta .boton_favorito:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra oscura sutil al pasar el cursor */
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  55% { transform: scale(1.35); }
+  100% { transform: scale(1.1); }
+}
+
+.tarjeta .boton_favorito.guardado {
+  background-color: rgba(220, 38, 38, 0.12);
+  border-color: #dc2626;
+  animation: heartPop 0.3s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .grid-favoritos {
@@ -98,10 +120,47 @@
   font-weight: 700;
   color: var(--text-main);
 }
-
 .fav-artista {
   color: var(--text-muted);
   font-size: 0.9rem;
+}
+
+.acciones-tarjeta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.acciones-tarjeta .boton-reproducir-molde {
+  flex-grow: 1;
+  background-color: var(--color-primary);
+  color: var(--color-btn-text);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: var(--shadow-flat);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.acciones-tarjeta .boton-reproducir-molde:hover {
+  background-color: var(--color-primary-hover);
+  color: var(--color-btn-text);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px var(--color-shadow-primary);
+}
+
+.acciones-tarjeta .boton-reproducir-molde:active {
+  transform: scale(0.98);
 }
 
 @media (max-width: 768px) {

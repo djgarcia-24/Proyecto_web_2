@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Deezer Manager - Iniciar Sesión</title>
     <link rel="stylesheet" href="./css/juan/style.css" />
+    <link rel="manifest" href="./offline/manifest.json" />
   </head>
   <body>
     <main class="carta_autenticacion">
@@ -56,5 +57,14 @@
       </article>
     </main>
     <script src="./js/inicio_sesion.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js")
+            .then((reg) => console.log("Service Worker registrado con scope:", reg.scope))
+            .catch((err) => console.error("Error al registrar Service Worker:", err));
+        });
+      }
+    </script>
   </body>
 </html>

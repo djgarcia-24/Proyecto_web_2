@@ -7,14 +7,20 @@
       <!-- Ruta correcta relativa a html/ -->
       <link rel="stylesheet" href="../css/juan/style.css" />
       <link rel="stylesheet" href="../css/juan/style_caja_de_artista.css" />
+      <link rel="manifest" href="../offline/manifest.json" />
    </head>
    <!-- Corregido: Ahora apunta a "favoritos" en vez de "buscar" -->
    <body data-current-nav="favoritos" id="vista_favoritos">
       <aside class="sidebar" id="main-sidebar"></aside>
 
       <main id="app-content">
-         <header>
-            <h1 class="header-title">Mis Favoritos</h1>
+         <header class="view-header">
+            <div class="header-top">
+               <h1 class="header-title">Mis Favoritos</h1>
+               <div id="indicador-conexion" class="badge-conexion">
+                  <span class="badge-dot"></span> <span class="badge-text">Detectando conexión...</span>
+               </div>
+            </div>
             <p class="subtitle-view">
                Tus álbumes y artistas guardados, listos para reproducir.
             </p>
@@ -75,5 +81,14 @@
       <script src="../js/sincronizador.js"></script>
       <script src="../js/player.js"></script>
       <script src="../js/servicio_favoritos.js"></script>
+      <script>
+         if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+               navigator.serviceWorker.register("../sw.js")
+                  .then((reg) => console.log("Service Worker registrado con scope:", reg.scope))
+                  .catch((err) => console.error("Error al registrar Service Worker:", err));
+            });
+         }
+      </script>
    </body>
 </html>
