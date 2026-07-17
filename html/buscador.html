@@ -1,49 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador de Música</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/style_caja_de_artista.css">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Buscador de Música</title>
+      <link rel="stylesheet" href="../css/juan/style.css" />
+      <link rel="stylesheet" href="../css/juan/style_caja_de_artista.css" />
+   </head>
+   <body data-current-nav="buscar" id="vista_buscar">
+      <aside class="sidebar" id="main-sidebar"></aside>
 
-</head>
-<body data-current-nav="buscar" id="vista_buscar">
-    
-    <aside class="sidebar" id="main-sidebar"></aside>
-    
-    <main class="buscador" id="app-content">  
-        
-        <header>
+      <main class="buscador" id="app-content">
+         <header>
             <h1 class="header-title">Explorar Música</h1>
-        </header>
+         </header>
 
-        <section class="search-wrapper" >
-            <div id = "elementos_de_busqueda">
-                <input type="text" id="input_busqueda" placeholder="Artistas, álbumes o canciones..." >
-                <button type="button" id="buscar"  >Buscar</button>
+         <section class="search-wrapper">
+            <div id="elementos_de_busqueda">
+               <input
+                  type="text"
+                  id="input_busqueda"
+                  placeholder="Artistas, álbumes o canciones..."
+               />
+               <button type="button" id="buscar">Buscar</button>
             </div>
+         </section>
 
-           
-        </section>
+         <div id="resultados" class="grid-container"></div>
+      </main>
 
+      <script src="../js/sidebar.js"></script>
+      <script src="../js/botones_laterales.js"></script>
+      <script src="../js/api.js"></script>
 
-
-        <div id="resultados" class="grid-container">
-            </div>
-
-    </div>
-
-    </main>
-
-    <script src="../js/sidebar.js"></script>
-    <script src="../js/botones_laterales.js"></script>
-     <script src="../js/api.js"></script>
-
-    <script src="../js/gestor_sesion.js"></script>
-    <script src="../js/datos_locales.js"></script>
-    <script src="../js/sincronizador.js"></script>
-    <script src="../js/player.js"></script>
-    <script src="../js/servicio_favoritos.js"></script>
-</body>
+      <script src="../js/gestor_sesion.js"></script>
+      <script src="../js/datos_locales.js"></script>
+      <script src="../js/sincronizador.js"></script>
+      <script src="../js/player.js"></script>
+      <script src="../js/servicio_favoritos.js"></script>
+   </body>
 </html>

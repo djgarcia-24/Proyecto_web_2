@@ -1,0 +1,121 @@
+/* =========================================
+   ESTILOS EXCLUSIVOS DE TARJETAS Y GRIDS
+   (Usa las variables de style.css)
+   ========================================= */
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.tarjeta {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  text-align: center;
+  transition: var(--transition-smooth);
+  box-shadow: var(--shadow-flat);
+}
+
+.tarjeta:hover {
+  transform: scale(1.02);
+  border-color: var(--color-secondary);
+  box-shadow:
+    0 8px 25px var(--color-shadow-secondary),
+    var(--shadow-btn-hover);
+}
+
+.tarjeta img {
+  width: 100%;
+  border-radius: var(--radius-md);
+  margin-bottom: 15px;
+}
+
+.tarjeta h3 {
+  margin: 10px 0 5px 0;
+  font-size: 1.2em;
+  color: var(--color-primary);
+}
+
+.tarjeta p {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: 0.9em;
+}
+
+.tarjeta .boton_favorito {
+  margin-top: 12px;
+}
+
+.grid-favoritos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.tarjeta-fav {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--shadow-flat);
+  transition: var(--transition-smooth);
+}
+
+.tarjeta-fav:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-primary);
+  box-shadow:
+    0 8px 25px var(--color-shadow-primary),
+    var(--shadow-btn-hover);
+}
+
+.fav-img {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.fav-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fav-info {
+  text-align: center;
+}
+
+.fav-titulo {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.fav-artista {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .grid-favoritos {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-favoritos {
+    grid-template-columns: 1fr;
+  }
+}
