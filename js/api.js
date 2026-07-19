@@ -226,7 +226,7 @@ async function cargarDetalleArtista(artista) {
                         // Guardamos el nombre del artista en el objeto álbum para persistirlo correctamente
                         album.artista = artista.name;
 
-                        window.guardarFavoritoLocal(album, 0, tracksParaGuardar);
+                        guardarFavoritoLocal(album, 0, tracksParaGuardar);
                     }
                 });
 
