@@ -25,19 +25,54 @@ window.descargarFavoritosDesdeServidor = function(token) {
     })
     .then(function(serverFavs) {
         if (Array.isArray(serverFavs)) {
+            var favoritosLocales = typeof obtenerFavoritos === "function" ? obtenerFavoritos() : [];
+            
             var localFavs = serverFavs.map(function(fav) {
+                var localExistente = favoritosLocales.find(function(lf) {
+                    return String(lf.id) === String(fav.id);
+                });
+                
+                var ratingToUse = fav.rating || 0;
+                var tracksToUse = fav.tracks || [];
+                var sincronizadoToUse = true;
+
+                if (localExistente) {
+                    // Si la calificación local no está sincronizada o es mayor que la del servidor, la conservamos
+                    if (localExistente.sincronizado === false || localExistente.rating > ratingToUse) {
+                        ratingToUse = localExistente.rating;
+                    }
+                    if (localExistente.sincronizado === false) {
+                        sincronizadoToUse = false;
+                    }
+                    // Si el servidor no trajo canciones pero localmente sí tenemos
+                    if (localExistente.tracks && localExistente.tracks.length > 0 && tracksToUse.length === 0) {
+                        tracksToUse = localExistente.tracks;
+                    }
+                }
+
                 return {
                     id: fav.id,
                     titulo: fav.title || fav.titulo,
                     artista: fav.artist || fav.artista || "Artista no disponible",
                     portada: fav.cover || fav.portada || "",
-                    rating: fav.rating || 0,
-                    tracks: fav.tracks || [],
-                    sincronizado: true
+                    rating: ratingToUse,
+                    tracks: tracksToUse,
+                    sincronizado: sincronizadoToUse
                 };
             });
+
+            // Conservar favoritos agregados localmente que aún no se han sincronizado
+            favoritosLocales.forEach(function(localFav) {
+                var existeEnServidor = serverFavs.some(function(sf) {
+                    return String(sf.id) === String(localFav.id);
+                });
+                if (!existeEnServidor && localFav.sincronizado === false) {
+                    localFavs.push(localFav);
+                }
+            });
+
             localStorage.setItem("lista_favoritos", JSON.stringify(localFavs));
-            console.log("Favoritos sincronizados desde el servidor: " + localFavs.length);
+            console.log("Favoritos sincronizados y fusionados desde el servidor: " + localFavs.length);
             return localFavs;
         }
     });
