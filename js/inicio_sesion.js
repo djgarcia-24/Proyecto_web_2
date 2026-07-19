@@ -27,7 +27,7 @@ function ocultarSpinner() {
 
 async function descargarFavoritosTrasLogin(token) {
   try {
-    const respuesta = await fetch(`${URL_SERVIDOR}/Robfavoritos`, {
+    const respuesta = await fetch(`${URL_SERVIDOR}/obtenerFavoritos`, {
       method: "GET",
       headers: {
         "Authorization": "Bearer " + token
@@ -71,8 +71,14 @@ async function iniciarSesion(emailUsuario, passwordUsuario) {
     }
 
     // Guardar token y correo en localStorage
-    if (typeof guardarDatosSesion === "function") {
+    if (typeof  window.guardarDatosSesion === "function") {
+
+      //DEBE IMPORTAR  FUNCION DE OTRO JS 
+
       guardarDatosSesion(datos.token, emailUsuario);
+
+
+      
     } else {
       localStorage.setItem("token_seguridad", datos.token);
       localStorage.setItem("correo_activo", emailUsuario);
