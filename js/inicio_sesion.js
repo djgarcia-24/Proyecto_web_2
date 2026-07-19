@@ -66,6 +66,9 @@ async function iniciarSesion(emailUsuario, passwordUsuario) {
 
     const datos = await respuesta.json();
 
+      console.log("antes de linea 80")
+
+
     if (!respuesta.ok) {
       throw new Error(datos.error || "Error en el servidor");
     }
@@ -75,7 +78,9 @@ async function iniciarSesion(emailUsuario, passwordUsuario) {
 
       //DEBE IMPORTAR  FUNCION DE OTRO JS 
 
-      guardarDatosSesion(datos.token, emailUsuario);
+      window.guardarDatosSesion(datos.token, emailUsuario);
+
+      console.log("linea 80")
 
 
       
