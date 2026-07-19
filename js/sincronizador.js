@@ -31,7 +31,7 @@ window.descargarFavoritosDesdeServidor = function(token) {
                     titulo: fav.title || fav.titulo,
                     artista: fav.artist || fav.artista || "Artista no disponible",
                     portada: fav.cover || fav.portada || "",
-                    rating: fav.rating || 0,
+                    rating: fav.rating || fav.rating,
                     tracks: fav.tracks || [],
                     sincronizado: true
                 };
@@ -83,10 +83,16 @@ function enviarCancionAlServidor(cancion, token, posicionEnLista) {
             var favoritosActualizados = obtenerFavoritos();
 
             if (favoritosActualizados[posicionEnLista]) {
-                favoritosActualizados[posicionEnLista].sincronizado = true;
-                guardarFavoritos(favoritosActualizados);
-                console.log("Se sincronizó con éxito: " + cancion.titulo);
+               var favoritosActualizados = obtenerFavoritos();
+                var index = favoritosActualizados.findIndex(f => f.id === cancion.id);
+            
+                if (index !== -1) {
+                    favoritosActualizados[index].sincronizado = true;
+                    guardarFavoritos(favoritosActualizados);
+                    console.log("Se sincronizó con éxito: " + cancion.titulo);
+                }
             }
+
         } else {
             console.log("El servidor rechazó la sincronización de: " + cancion.titulo);
         }

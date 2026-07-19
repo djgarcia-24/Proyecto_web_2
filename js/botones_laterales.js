@@ -52,43 +52,6 @@ if (boton_cerrar) {
     });
 }
 
-// --- FUNCIÓN DE ACTUALIZACIÓN DEL ESTADO DE RED REAL ---
-async function actualizarIndicadorConexion() {
-    const indicador = document.getElementById('indicador-conexion');
-    if (!indicador) return;
-
-    const textNode = indicador.querySelector('.badge-text');
-
-    // 1. Primer filtro: Si el navegador reporta desconexión a nivel de hardware/sistema
-    if (!navigator.onLine) {
-        marcarOffline(indicador, textNode);
-        return;
-    }
-
-    // 2. Segundo filtro: Sondeo activo (Heartbeat) por si hay red local pero sin internet real
-    try {
-        const controlador = new AbortController();
-        const timeoutId = setTimeout(() => controlador.abort(), 60000); // 10 segundos máximo
-
-        // Hacemos una consulta rápida a una URL del servidor para confirmar
-        await fetch("https://servidor-proyecto-web-2.onrender.com", {
-            method: "GET",
-            mode: "no-cors",  // Evita problemas de CORS en verificaciones rápidas
-            cache: "no-store", // Fuerza a ignorar cachés viejas
-            signal: controlador.signal
-        });
-        
-        clearTimeout(timeoutId);
-
-        // Si responde, estamos realmente en línea
-        indicador.classList.remove('offline');
-        indicador.classList.add('online');
-        if (textNode) textNode.textContent = 'En línea';
-    } catch (error) {
-        // Si falla la petición (por ejemplo, bloqueo de DevTools o sin acceso real a internet)
-        marcarOffline(indicador, textNode);
-    }
-}
 
 function marcarOffline(indicador, textNode) {
     if (indicador) {
