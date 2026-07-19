@@ -26,6 +26,7 @@ function ocultarSpinner() {
 }
 
 async function descargarFavoritosTrasLogin(token) {
+
   try {
     const respuesta = await fetch(`${URL_SERVIDOR}/obtenerFavoritos`, {
       method: "GET",
@@ -49,6 +50,8 @@ async function descargarFavoritosTrasLogin(token) {
         console.log("Favoritos sincronizados tras login con éxito:", localFavs.length);
       }
     }
+
+    
   } catch (error) {
     console.error("Error sincronizando favoritos tras login:", error);
   }
@@ -66,9 +69,6 @@ async function iniciarSesion(emailUsuario, passwordUsuario) {
 
     const datos = await respuesta.json();
 
-      console.log("antes de linea 80")
-
-
     if (!respuesta.ok) {
       throw new Error(datos.error || "Error en el servidor");
     }
@@ -78,12 +78,7 @@ async function iniciarSesion(emailUsuario, passwordUsuario) {
 
       //DEBE IMPORTAR  FUNCION DE OTRO JS 
 
-      window.guardarDatosSesion(datos.token, emailUsuario);
-
-      console.log("linea 80")
-
-
-      
+      window.guardarDatosSesion(datos.token, emailUsuario);      
     } else {
       localStorage.setItem("token_seguridad", datos.token);
       localStorage.setItem("correo_activo", emailUsuario);

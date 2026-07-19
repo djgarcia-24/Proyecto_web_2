@@ -68,7 +68,7 @@ async function actualizarIndicadorConexion() {
     // 2. Segundo filtro: Sondeo activo (Heartbeat) por si hay red local pero sin internet real
     try {
         const controlador = new AbortController();
-        const timeoutId = setTimeout(() => controlador.abort(), 2000); // 2 segundos máximo
+        const timeoutId = setTimeout(() => controlador.abort(), 60000); // 10 segundos máximo
 
         // Hacemos una consulta rápida a una URL del servidor para confirmar
         await fetch("https://servidor-proyecto-web-2.onrender.com", {

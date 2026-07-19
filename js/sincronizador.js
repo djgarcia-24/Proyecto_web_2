@@ -11,7 +11,7 @@ window.descargarFavoritosDesdeServidor = function(token) {
     if (!token || navigator.onLine === false) {
         return Promise.reject("Sin conexión o sin token.");
     }
-    return fetch(URL_SERVIDOR + "/Robfavoritos", {
+    return fetch(URL_SERVIDOR + "/obtenerFavoritos", {
         method: "GET",
         headers: {
             "Authorization": "Bearer " + token
