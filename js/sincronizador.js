@@ -31,7 +31,7 @@ window.descargarFavoritosDesdeServidor = function(token) {
                     titulo: fav.title || fav.titulo,
                     artista: fav.artist || fav.artista || "Artista no disponible",
                     portada: fav.cover || fav.portada || "",
-                    rating: fav.rating || fav.rating,
+                    rating: fav.rating || 0,
                     tracks: fav.tracks || [],
                     sincronizado: true
                 };
@@ -79,22 +79,23 @@ function enviarCancionAlServidor(cancion, token, posicionEnLista) {
         body: JSON.stringify(datosParaEnviar) 
     })
     .then(function(respuesta) {
-        if (respuesta.ok === true) { 
+        if (respuesta.status === 401) {
+            console.error("Token inválido o expirado. Inicia sesión de nuevo.");
+            return;
+        }
+
+        if (respuesta.ok) { 
+            // Buscamos por ID, no por índice
             var favoritosActualizados = obtenerFavoritos();
-
-            if (favoritosActualizados[posicionEnLista]) {
-               var favoritosActualizados = obtenerFavoritos();
-                var index = favoritosActualizados.findIndex(f => f.id === cancion.id);
+            var index = favoritosActualizados.findIndex(f => f.id === cancion.id);
             
-                if (index !== -1) {
-                    favoritosActualizados[index].sincronizado = true;
-                    guardarFavoritos(favoritosActualizados);
-                    console.log("Se sincronizó con éxito: " + cancion.titulo);
-                }
+            if (index !== -1) {
+                favoritosActualizados[index].sincronizado = true;
+                guardarFavoritos(favoritosActualizados);
+                console.log("Se sincronizó con éxito: " + cancion.titulo);
             }
-
         } else {
-            console.log("El servidor rechazó la sincronización de: " + cancion.titulo);
+            console.log("El servidor rechazó: " + cancion.titulo);
         }
     })
     .catch(function(error) {
