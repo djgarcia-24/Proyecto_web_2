@@ -70,7 +70,7 @@ function enviarCancionAlServidor(cancion, token, posicionEnLista) {
         rating: cancion.rating 
     };
 
-    fetch(URL_SERVIDOR + "/Robfavoritos", { 
+    fetch(URL_SERVIDOR + "/obtenerFavoritos", { 
         method: "POST", 
         headers: {
             "Content-Type": "application/json", 
