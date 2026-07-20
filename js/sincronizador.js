@@ -91,12 +91,12 @@ window.sincronizarConServidor = function() {
         var cancion = favoritos[i];
 
         if (cancion.sincronizado === false) {
-            enviarCancionAlServidor(cancion, tokenSeguridad, i);
+            enviarCancionAlServidor(cancion, tokenSeguridad);
         }
     }
 };
 
-function enviarCancionAlServidor(cancion, token, posicionEnLista) {
+function enviarCancionAlServidor(cancion, token) {
     var datosParaEnviar = {
         id: cancion.id,
         title: cancion.titulo,
@@ -117,9 +117,12 @@ function enviarCancionAlServidor(cancion, token, posicionEnLista) {
     .then(function(respuesta) {
         if (respuesta.ok === true) { 
             var favoritosActualizados = obtenerFavoritos();
+            var favEncontrado = favoritosActualizados.find(function(lf) {
+                return String(lf.id) === String(cancion.id);
+            });
 
-            if (favoritosActualizados[posicionEnLista]) {
-                favoritosActualizados[posicionEnLista].sincronizado = true;
+            if (favEncontrado) {
+                favEncontrado.sincronizado = true;
                 guardarFavoritos(favoritosActualizados);
                 console.log("Se sincronizó con éxito: " + cancion.titulo);
             }
