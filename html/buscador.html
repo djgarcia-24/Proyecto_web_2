@@ -4,10 +4,10 @@
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Buscador de Música</title>
-      <link rel="stylesheet" href="../css/juan/style.css" />
-      <link rel="stylesheet" href="../css/juan/style_caja_de_artista.css" />
+      <link rel="stylesheet" href="../css/style.css" />
+      <link rel="stylesheet" href="../css/style_caja_de_artista.css" />
       <script>
-         // Se ubica en el <head> para redirigir de inmediato al login si el usuario 
+         // Se ubica en el <head> para redirigir de inmediato al login si el usuario
          // no está autenticado, evitando mostrar la interfaz privada por un instante.
          if (!localStorage.getItem("token_seguridad")) {
             window.location.href = "../index.html";
@@ -25,7 +25,8 @@
                   <div class="header-top">
                      <h1 class="header-title">Explorar Música</h1>
                      <div id="indicador-conexion" class="badge-conexion">
-                        <span class="badge-dot"></span> <span class="badge-text">Detectando conexión...</span>
+                        <span class="badge-dot"></span>
+                        <span class="badge-text">Detectando conexión...</span>
                      </div>
                   </div>
                </header>
@@ -45,7 +46,11 @@
             </div>
 
             <!-- Sección Oculta del Detalle del Artista -->
-            <div id="detalle-artista" class="oculto" style="display: none;"></div>
+            <div
+               id="detalle-artista"
+               class="oculto"
+               style="display: none"
+            ></div>
          </main>
       </div>
 
@@ -61,9 +66,17 @@
       <script>
          if ("serviceWorker" in navigator) {
             window.addEventListener("load", () => {
-               navigator.serviceWorker.register("../sw.js")
-                  .then((reg) => console.log("Service Worker registrado con scope:", reg.scope))
-                  .catch((err) => console.error("Error al registrar Service Worker:", err));
+               navigator.serviceWorker
+                  .register("../sw.js")
+                  .then((reg) =>
+                     console.log(
+                        "Service Worker registrado con scope:",
+                        reg.scope,
+                     ),
+                  )
+                  .catch((err) =>
+                     console.error("Error al registrar Service Worker:", err),
+                  );
             });
          }
       </script>
