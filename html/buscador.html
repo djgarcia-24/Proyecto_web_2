@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Buscador de Música</title>
+      <link rel="stylesheet" href="../css/juan/style.css" />
+      <link rel="stylesheet" href="../css/juan/style_caja_de_artista.css" />
+      <script>
+         // Se ubica en el <head> para redirigir de inmediato al login si el usuario 
+         // no está autenticado, evitando mostrar la interfaz privada por un instante.
+         if (!localStorage.getItem("token_seguridad")) {
+            window.location.href = "../index.html";
+         }
+      </script>
+   </head>
+   <body data-current-nav="buscar" id="vista_buscar">
+      <div class="app-layout">
+         <aside class="sidebar" id="main-sidebar"></aside>
+
+         <main class="buscador" id="app-content">
+            <!-- Sección Principal del Buscador -->
+            <div id="buscador-main">
+               <header class="view-header">
+                  <div class="header-top">
+                     <h1 class="header-title">Explorar Música</h1>
+                     <div id="indicador-conexion" class="badge-conexion">
+                        <span class="badge-dot"></span> <span class="badge-text">Detectando conexión...</span>
+                     </div>
+                  </div>
+               </header>
+
+               <section class="search-wrapper">
+                  <div id="elementos_de_busqueda">
+                     <input
+                        type="text"
+                        id="input_busqueda"
+                        placeholder="Busca tus artistas favoritos..."
+                     />
+                     <button type="button" id="buscar">Buscar</button>
+                  </div>
+               </section>
+
+               <div id="resultados" class="grid-container"></div>
+            </div>
+
+            <!-- Sección Oculta del Detalle del Artista -->
+            <div id="detalle-artista" class="oculto" style="display: none;"></div>
+         </main>
+      </div>
+
+      <script src="../js/sidebar.js"></script>
+      <script src="../js/botones_laterales.js"></script>
+      <script src="../js/api.js"></script>
+
+      <script src="../js/gestor_sesion.js"></script>
+      <script src="../js/datos_locales.js"></script>
+      <script src="../js/sincronizador.js"></script>
+      <script src="../js/player.js"></script>
+      <script src="../js/servicio_favoritos.js"></script>
+      <script>
+         if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+               navigator.serviceWorker.register("../sw.js")
+                  .then((reg) => console.log("Service Worker registrado con scope:", reg.scope))
+                  .catch((err) => console.error("Error al registrar Service Worker:", err));
+            });
+         }
+      </script>
+   </body>
+</html>

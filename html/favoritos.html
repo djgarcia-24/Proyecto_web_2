@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Buscador de Música - Favoritos</title>
+      <!-- Ruta correcta relativa a html/ -->
+      <link rel="stylesheet" href="../css/juan/style.css" />
+      <link rel="stylesheet" href="../css/juan/style_caja_de_artista.css" />
+      <script>
+         // Se ubica en el <head> para redirigir de inmediato al login si el usuario 
+         // no está autenticado, evitando mostrar la interfaz privada por un instante.
+         if (!localStorage.getItem("token_seguridad")) {
+            window.location.href = "../index.html";
+         }
+      </script>
+   </head>
+   <!-- Corregido: Ahora apunta a "favoritos" en vez de "buscar" -->
+   <body data-current-nav="favoritos" id="vista_favoritos">
+      <div class="app-layout">
+         <aside class="sidebar" id="main-sidebar"></aside>
+
+         <main id="app-content">
+            <header class="view-header">
+               <div class="header-top">
+                  <h1 class="header-title">Mis Favoritos</h1>
+                  <div id="indicador-conexion" class="badge-conexion">
+                     <span class="badge-dot"></span> <span class="badge-text">Detectando conexión...</span>
+                  </div>
+               </div>
+               <p class="subtitle-view">
+                  Tus álbumes y artistas guardados, listos para reproducir.
+               </p>
+
+               <!-- Agregamos el selector de estrellas dinámico que estaba en Robfavoritos.html -->
+               <div class="control-filtro">
+                  <label for="filtro-rating">Filtrar por estrellas: </label>
+                  <select id="filtro-rating">
+                     <option value="0">Todos los favoritos</option>
+                     <option value="5">⭐⭐⭐⭐⭐ (5 estrellas)</option>
+                     <option value="4">⭐⭐⭐⭐ (4 estrellas)</option>
+                     <option value="3">⭐⭐⭐ (3 estrellas)</option>
+                     <option value="2">⭐⭐ (2 estrellas)</option>
+                     <option value="1">⭐ (1 estrella)</option>
+                  </select>
+               </div>
+            </header>
+
+            <!-- Contenedor vacío: JavaScript inyectará las tarjetas aquí -->
+            <section class="grid-favoritos"></section>
+
+            <!-- Molde/Plantilla oculto para generar las tarjetas desde JS -->
+            <div id="molde-tarjeta" style="display: none">
+               <article class="tarjeta-fav">
+                  <div class="fav-img">
+                     <img src="" alt="Portada" class="imagen-molde" />
+                  </div>
+                  <div class="fav-info">
+                     <h3 class="fav-titulo titulo-molde">Título del Álbum</h3>
+                     <p class="fav-artista artista-molde">Nombre del Artista</p>
+
+                     <!-- Contenedor vacío para las estrellas interactivas -->
+                     <div class="contenedor-estrellas-molde"></div>
+                  </div>
+                  <div class="acciones-tarjeta">
+                     <button type="button" class="boton-reproducir-molde">
+                        Ver Canciones
+                     </button>
+                     <button
+                        type="button"
+                        class="boton_favorito eliminar-cancion-molde"
+                     >
+                        ❤️
+                     </button>
+                  </div>
+                  <!-- Contenedor para desplegar la lista de pistas del álbum -->
+                  <div class="acordeon-tracks-fav" style="display: none; width: 100%; text-align: left; margin-top: 12px; border-top: 1px solid var(--border-opacity); padding-top: 10px;"></div>
+               </article>
+            </div>
+         </main>
+      </div>
+
+      <!-- SCRIPTS CON LAS RUTAS RELATIVAS CORREGIDAS PARA LA CARPETA html/ -->
+      <!-- 1. Scripts globales en js/ -->
+      <script src="../js/sidebar.js"></script>
+      <script src="../js/botones_laterales.js"></script>
+
+      <!-- 2. Scripts de lógica (accediendo desde html/) -->
+      <script src="../js/gestor_sesion.js"></script>
+      <script src="../js/datos_locales.js"></script>
+      <script src="../js/sincronizador.js"></script>
+      <script src="../js/player.js"></script>
+      <script src="../js/servicio_favoritos.js"></script>
+      <script>
+         if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+               navigator.serviceWorker.register("../sw.js")
+                  .then((reg) => console.log("Service Worker registrado con scope:", reg.scope))
+                  .catch((err) => console.error("Error al registrar Service Worker:", err));
+            });
+         }
+      </script>
+   </body>
+</html>
