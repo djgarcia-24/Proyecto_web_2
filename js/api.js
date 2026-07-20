@@ -56,10 +56,10 @@ async function buscarMusica() {
     const termino = inputBusqueda.value.trim();
     if (!termino) {
         gridResultados.innerHTML = `
-            <div class="empty-state-container" style="grid-column: 1 / -1; text-align: center; padding: 45px 20px;">
-                <div style="font-size: 3rem; margin-bottom: 15px;">🔍✏️</div>
-                <h3 style="color: var(--text-main); font-size: 1.2rem; font-family: var(--font-syne);">Búsqueda vacía</h3>
-                <p style="color: var(--text-muted); font-size: 0.95rem;">Escribe el nombre de un artista en el buscador para explorar su música.</p>
+            <div class="empty-state-container large-state">
+                <div class="empty-state-icon">🔍✏️</div>
+                <h3 class="empty-state-title">Búsqueda vacía</h3>
+                <p class="empty-state-text">Escribe el nombre de un artista en el buscador para explorar su música.</p>
             </div>
         `;
         return;
@@ -68,13 +68,13 @@ async function buscarMusica() {
     // Verificar si estamos desconectados (Offline)
     if (navigator.onLine === false) {
         gridResultados.innerHTML = `
-            <div class="empty-state-container" style="grid-column: 1 / -1; text-align: center; padding: 45px 20px; background: var(--bg-surface); border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
-                <div style="font-size: 3.5rem; margin-bottom: 15px;">📡🚫</div>
-                <h3 style="margin-bottom: 10px; font-family: var(--font-syne); color: var(--text-main); font-size: 1.3rem;">Búsqueda no disponible sin conexión</h3>
-                <p style="max-width: 420px; margin: 0 auto 20px; font-size: 0.95rem; line-height: 1.6; color: var(--text-muted);">
+            <div class="empty-state-container large-state offline-state">
+                <div class="empty-state-icon large-icon">📡🚫</div>
+                <h3 class="empty-state-title large-title">Búsqueda no disponible sin conexión</h3>
+                <p class="empty-state-text large-text">
                     Actualmente no tienes conexión a internet para explorar nuevos artistas. Puedes seguir calificando o escuchando tus álbumes guardados.
                 </p>
-                <a href="favoritos.html" style="display: inline-block; background: var(--color-primary); color: var(--color-btn-text); padding: 10px 24px; border-radius: var(--radius-pill); text-decoration: none; font-weight: 600; font-size: 0.9rem;">Ir a Mis Favoritos</a>
+                <a href="favoritos.html" class="empty-state-btn">Ir a Mis Favoritos</a>
             </div>
         `;
         return;
@@ -82,9 +82,9 @@ async function buscarMusica() {
 
     // Spinner indicador de carga
     gridResultados.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-            <div class="ucab-spinner" style="margin: 0 auto 15px;"></div>
-            <p style="color: var(--text-muted);">Buscando artistas...</p>
+        <div class="cargando-wrapper">
+            <div class="ucab-spinner"></div>
+            <p>Buscando artistas...</p>
         </div>
     `;
 
@@ -104,7 +104,7 @@ async function buscarMusica() {
                     <img src="${artista.picture_medium}" alt="Foto de ${artista.name}">
                     <h3>${artista.name}</h3>
                     <p class="fans-count">${fansText}</p>
-                    <button type="button" class="btn-ver-detalle neu-btn-active" style="margin-top: 15px; width: 100%; padding: 10px; border-radius: var(--radius-pill); border: 1px solid var(--border-color); background: var(--color-primary); color: var(--color-btn-text); font-weight: 600; cursor: pointer;">Ver Álbumes</button>
+                    <button type="button" class="btn-ver-detalle btn-ver-albumes-artista neu-btn-active">Ver Álbumes</button>
                 `;
 
                 tarjeta.querySelector('.btn-ver-detalle').addEventListener('click', () => {
@@ -115,16 +115,16 @@ async function buscarMusica() {
             });
         } else {
             gridResultados.innerHTML = `
-                <div class="empty-state-container" style="grid-column: 1 / -1; text-align: center; padding: 45px 20px;">
-                    <div style="font-size: 3rem; margin-bottom: 15px;">🔍❌</div>
-                    <h3 style="color: var(--text-main); font-size: 1.2rem; font-family: var(--font-syne);">Resultados no encontrados</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem;">No pudimos encontrar ningún artista que coincida con "${termino}". Revisa la ortografía.</p>
+                <div class="empty-state-container large-state">
+                    <div class="empty-state-icon">🔍❌</div>
+                    <h3 class="empty-state-title">Resultados no encontrados</h3>
+                    <p class="empty-state-text">No pudimos encontrar ningún artista que coincida con "${termino}". Revisa la ortografía.</p>
                 </div>
             `;
         }
     } catch (err) {
         console.error("Error al buscar artistas:", err);
-        gridResultados.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: red;">Error en el servicio de Deezer. Inténtalo de nuevo.</p>`;
+        gridResultados.innerHTML = `<p class="status-message-error">Error en el servicio de Deezer. Inténtalo de nuevo.</p>`;
     }
 }
 
@@ -134,9 +134,9 @@ async function cargarDetalleArtista(artista) {
     buscadorMain.style.display = "none";
     detalleArtista.style.display = "block";
     detalleArtista.innerHTML = `
-        <div style="text-align: center; padding: 40px;">
-            <div class="ucab-spinner" style="margin: 0 auto 15px;"></div>
-            <p style="color: var(--text-muted);">Cargando álbumes del artista...</p>
+        <div class="cargando-wrapper">
+            <div class="ucab-spinner"></div>
+            <p>Cargando álbumes del artista...</p>
         </div>
     `;
 
@@ -150,13 +150,13 @@ async function cargarDetalleArtista(artista) {
                 <div class="artista-profile-header">
                     <img class="artista-avatar" src="${artista.picture_medium}" alt="Foto de ${artista.name}" />
                     <div class="artista-profile-info">
-                        <h2 class="artista-nombre" style="font-family: var(--font-syne); font-size: 2.2rem; color: var(--color-primary);">${artista.name}</h2>
+                        <h2 class="artista-detalle-nombre">${artista.name}</h2>
                         <p class="artista-fans">${artista.nb_fan ? artista.nb_fan.toLocaleString() : '0'} fans en Deezer</p>
                     </div>
                 </div>
             </div>
             
-            <h3 class="seccion-titulo" style="margin-top: 30px; margin-bottom: 20px; font-family: var(--font-syne); font-size: 1.5rem;">Discografía / Álbumes</h3>
+            <h3 class="artista-detalle-seccion-titulo">Discografía / Álbumes</h3>
             <div class="grid-container" id="grid-albums-artista"></div>
         `;
 
@@ -180,15 +180,15 @@ async function cargarDetalleArtista(artista) {
                 const anioLanzamiento = album.release_date ? album.release_date.split("-")[0] : "N/A";
 
                 tarjetaAlbum.innerHTML = `
-                    <div style="position: relative;">
+                    <div class="artista-album-tarjeta-portada-wrapper">
                         <img src="${album.cover_medium}" alt="Portada de ${album.title}">
-                        <button type="button" class="boton_favorito ${esFavorito ? 'guardado' : ''}" aria-label="Favorito" style="top: 15px; right: 15px;">${esFavorito ? '❤️' : '🤍'}</button>
+                        <button type="button" class="boton_favorito artista-album-favorito-btn ${esFavorito ? 'guardado' : ''}" aria-label="Favorito">${esFavorito ? '❤️' : '🤍'}</button>
                     </div>
-                    <h3 style="font-size: 1.1rem; margin-top: 10px;">${album.title}</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted);">${anioLanzamiento}</p>
+                    <h3 class="artista-album-titulo">${album.title}</h3>
+                    <p class="artista-album-anio">${anioLanzamiento}</p>
                     
-                    <button type="button" class="btn-toggle-tracks neu-btn-active" data-album-id="${album.id}" style="margin-top: 15px; width: 100%; padding: 8px 12px; border-radius: var(--radius-pill); border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-main); font-weight: 600; cursor: pointer; transition: var(--transition-smooth);">Ver Canciones</button>
-                    <div class="acordeon-tracks oculto" id="tracks-${album.id}" style="display: none; margin-top: 15px; text-align: left; border-top: 1px solid var(--border-opacity); padding-top: 10px;"></div>
+                    <button type="button" class="btn-toggle-tracks btn-album-ver-canciones neu-btn-active" data-album-id="${album.id}">Ver Canciones</button>
+                    <div class="acordeon-tracks oculto" id="tracks-${album.id}"></div>
                 `;
 
                 // Configurar botón Favorito del álbum
@@ -249,15 +249,15 @@ async function cargarDetalleArtista(artista) {
                 gridAlbums.appendChild(tarjetaAlbum);
             });
         } else {
-            gridAlbums.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted);">Este artista no cuenta con álbumes registrados.</p>`;
+            gridAlbums.innerHTML = `<p class="status-message-info">Este artista no cuenta con álbumes registrados.</p>`;
         }
 
     } catch (err) {
         console.error("Error al cargar detalle del artista:", err);
         detalleArtista.innerHTML = `
-            <div style="padding: 20px; text-align: center;">
+            <div class="cargando-wrapper">
                 <button type="button" id="btn-volver-error" class="btn-volver">← Volver al Buscador</button>
-                <p style="color: red; margin-top: 20px;">No se pudieron cargar los datos del artista. Revisa tu conexión.</p>
+                <p class="status-message-error">No se pudieron cargar los datos del artista. Revisa tu conexión.</p>
             </div>
         `;
         document.getElementById("btn-volver-error").addEventListener("click", () => {
@@ -274,9 +274,9 @@ async function mostrarTracksEnAlbum(album, contenedor, nombreArtista) {
 
     // Spinner interno
     contenedor.innerHTML = `
-        <div class="loading-tracks-spinner" style="text-align: center; padding: 15px;">
-            <div class="ucab-spinner" style="width: 24px; height: 24px; border-width: 3px; margin: 0 auto 5px;"></div>
-            <p style="font-size: 0.8rem; color: var(--text-muted);">Cargando canciones...</p>
+        <div class="loading-tracks-spinner">
+            <div class="ucab-spinner"></div>
+            <p>Cargando canciones...</p>
         </div>
     `;
 
@@ -289,7 +289,7 @@ async function mostrarTracksEnAlbum(album, contenedor, nombreArtista) {
             renderizarListaDeTracks(albumFav.tracks, contenedor, album, nombreArtista);
             return;
         } else {
-            contenedor.innerHTML = `<p style="font-size: 0.85rem; color: red; text-align: center; padding: 10px;">Requiere conexión para listar canciones de este álbum.</p>`;
+            contenedor.innerHTML = `<p class="status-message-error">Requiere conexión para listar canciones de este álbum.</p>`;
             return;
         }
     }
@@ -301,11 +301,11 @@ async function mostrarTracksEnAlbum(album, contenedor, nombreArtista) {
         if (res.data && res.data.length > 0) {
             renderizarListaDeTracks(res.data, contenedor, album, nombreArtista);
         } else {
-            contenedor.innerHTML = `<p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 10px;">No se encontraron canciones en este álbum.</p>`;
+            contenedor.innerHTML = `<p class="status-message-info">No se encontraron canciones en este álbum.</p>`;
         }
     } catch (err) {
         console.error("Error al obtener canciones del álbum:", err);
-        contenedor.innerHTML = `<p style="font-size: 0.85rem; color: red; text-align: center; padding: 10px;">Error al cargar canciones.</p>`;
+        contenedor.innerHTML = `<p class="status-message-error">Error al cargar canciones.</p>`;
     }
 }
 
@@ -316,19 +316,10 @@ function renderizarListaDeTracks(tracks, contenedor, album, nombreArtista) {
     // Lista ordenada / Contenedor semántico de canciones
     const lista = document.createElement("ol");
     lista.className = "lista-canciones-album";
-    lista.style.listStyle = "none";
-    lista.style.padding = "0";
-    lista.style.margin = "0";
 
     tracks.forEach((track, index) => {
         const fila = document.createElement("li");
         fila.className = "cancion-fila";
-        fila.style.display = "flex";
-        fila.style.justifyContent = "space-between";
-        fila.style.alignItems = "center";
-        fila.style.padding = "8px 4px";
-        fila.style.borderBottom = "1px solid var(--border-opacity)";
-        fila.style.fontSize = "0.9rem";
 
         const duracionMinSeg = track.duracion 
             ? `${Math.floor(track.duracion / 60)}:${(track.duracion % 60).toString().padStart(2, '0')}`
@@ -337,13 +328,13 @@ function renderizarListaDeTracks(tracks, contenedor, album, nombreArtista) {
                 : "0:00");
 
         fila.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 8px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                <span style="color: var(--text-muted); font-size: 0.8rem; width: 18px; text-align: right;">${index + 1}.</span>
-                <span class="cancion-titulo" style="font-weight: 500; overflow: hidden; text-overflow: ellipsis;">${track.title || track.titulo}</span>
+            <div class="cancion-col-info">
+                <span class="cancion-index">${index + 1}.</span>
+                <span class="cancion-titulo">${track.title || track.titulo}</span>
             </div>
-            <div style="display: flex; align-items: center; gap: 12px; margin-left: 10px;">
-                <span style="font-size: 0.8rem; color: var(--text-muted);">${duracionMinSeg}</span>
-                <button type="button" class="btn-play-track neu-btn-active" data-audio="${track.preview}" style="background: var(--color-primary); color: var(--color-btn-text); border: none; padding: 4px 10px; border-radius: var(--radius-pill); font-size: 0.75rem; cursor: pointer; font-weight: 600; min-width: 76px;">▶️ Escuchar</button>
+            <div class="cancion-col-acciones">
+                <span class="cancion-duracion">${duracionMinSeg}</span>
+                <button type="button" class="btn-play-track neu-btn-active" data-audio="${track.preview}">▶️ Escuchar</button>
             </div>
         `;
 
