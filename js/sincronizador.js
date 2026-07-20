@@ -102,7 +102,8 @@ function enviarCancionAlServidor(cancion, token, posicionEnLista) {
         title: cancion.titulo,
         artist: cancion.artista,
         cover: cancion.portada,
-        rating: cancion.rating 
+        rating: cancion.rating,
+        tracks: cancion.tracks || []
     };
 
     fetch(URL_SERVIDOR + "/favoritos", { 

@@ -3,6 +3,40 @@
 // Gestión y renderizado de álbumes favoritos con calificaciones y canciones.
 // =========================================================================
 
+// Helper JSONP para Deezer si no está definido
+if (typeof queryDeezer !== "function") {
+    window.queryDeezer = function(url, params = {}) {
+        return new Promise((resolve, reject) => {
+            const callbackName = `deezer_cb_${Date.now()}_${Math.floor(Math.random() * 1000000)}`;
+            window[callbackName] = function (data) {
+                resolve(data);
+                delete window[callbackName];
+            };
+
+            const script = document.createElement("script");
+            const allParams = { ...params, output: "jsonp", callback: callbackName };
+            const queryString = Object.keys(allParams)
+                .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(allParams[key])}`)
+                .join("&");
+            
+            script.src = `${url}?${queryString}`;
+            script.onerror = (err) => {
+                reject(err);
+                delete window[callbackName];
+                if (document.body.contains(script)) {
+                    document.body.removeChild(script);
+                }
+            };
+            script.onload = () => {
+                if (document.body.contains(script)) {
+                    document.body.removeChild(script);
+                }
+            };
+            document.body.appendChild(script);
+        });
+    };
+}
+
 document.addEventListener("DOMContentLoaded", function () {
 
     const gridFavoritos = document.querySelector(".grid-favoritos");
@@ -23,10 +57,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!favoritos || favoritos.length === 0) {
             gridFavoritos.innerHTML = `
-                <div class="empty-state" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px 20px;">
-                    <div style="font-size: 3rem; margin-bottom: 15px;">💿❤️</div>
-                    <h3 style="font-family: var(--font-syne); color: var(--text-main); font-size: 1.2rem; margin-bottom: 5px;">Tu colección privada está vacía</h3>
-                    <p style="font-size: 0.9rem;">Busca tus artistas favoritos y guarda sus álbumes para verlos aquí.</p>
+                <div class="empty-state">
+                    <div class="empty-state-icon">💿❤️</div>
+                    <h3 class="empty-state-title">Tu colección privada está vacía</h3>
+                    <p class="empty-state-text">Busca tus artistas favoritos y guarda sus álbumes para verlos aquí.</p>
                 </div>
             `;
             return;
@@ -42,10 +76,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (favoritosFiltrados.length === 0) {
             gridFavoritos.innerHTML = `
-                <div class="empty-state" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px 20px;">
-                    <div style="font-size: 3rem; margin-bottom: 15px;">⭐🔍</div>
-                    <h3 style="font-family: var(--font-syne); color: var(--text-main); font-size: 1.2rem; margin-bottom: 5px;">Sin resultados para el filtro</h3>
-                    <p style="font-size: 0.9rem;">No tienes ningún álbum calificado con ${calificacionFiltro} estrellas.</p>
+                <div class="empty-state">
+                    <div class="empty-state-icon">⭐🔍</div>
+                    <h3 class="empty-state-title">Sin resultados para el filtro</h3>
+                    <p class="empty-state-text">No tienes ningún álbum calificado con ${calificacionFiltro} estrellas.</p>
                 </div>
             `;
             return;
@@ -132,8 +166,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // --- CONFIGURAR DESPLEGABLE DE CANCIONES (TRACKS) ---
             if (btnToggleTracks && contenedorTracks) {
-                // Pre-renderizar las canciones dentro del contenedor oculto
-                renderizarTracksLocales(album, contenedorTracks);
+                // Pre-renderizar las canciones dentro del contenedor oculto si existen
+                if (album.tracks && album.tracks.length > 0) {
+                    renderizarTracksLocales(album, contenedorTracks);
+                }
 
                 btnToggleTracks.addEventListener("click", function () {
                     const estaOculto = contenedorTracks.style.display === "none";
@@ -141,6 +177,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         contenedorTracks.style.display = "block";
                         btnToggleTracks.textContent = "Ocultar Canciones";
                         btnToggleTracks.style.backgroundColor = "var(--color-primary-hover)";
+
+                        // Carga dinámica si la lista de pistas está vacía
+                        if (!album.tracks || album.tracks.length === 0) {
+                            cargarTracksDinamicos(album, contenedorTracks);
+                        }
                     } else {
                         contenedorTracks.style.display = "none";
                         btnToggleTracks.textContent = "Ver Canciones";
@@ -163,38 +204,29 @@ document.addEventListener("DOMContentLoaded", function () {
         contenedor.innerHTML = "";
 
         if (!album.tracks || album.tracks.length === 0) {
-            contenedor.innerHTML = `<p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 5px;">No hay canciones guardadas para este álbum.</p>`;
+            contenedor.innerHTML = `<p class="status-message-info">No hay canciones guardadas para este álbum.</p>`;
             return;
         }
 
         const lista = document.createElement("ol");
         lista.className = "lista-canciones-album";
-        lista.style.listStyle = "none";
-        lista.style.padding = "0";
-        lista.style.margin = "0";
 
         album.tracks.forEach((track, index) => {
             const fila = document.createElement("li");
             fila.className = "cancion-fila";
-            fila.style.display = "flex";
-            fila.style.justifyContent = "space-between";
-            fila.style.alignItems = "center";
-            fila.style.padding = "6px 0";
-            fila.style.borderBottom = "1px solid var(--border-opacity)";
-            fila.style.fontSize = "0.85rem";
 
             const mins = Math.floor((track.duracion || track.duration || 0) / 60);
             const secs = Math.floor((track.duracion || track.duration || 0) % 60).toString().padStart(2, '0');
             const duracionStr = `${mins}:${secs}`;
 
             fila.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 8px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                    <span style="color: var(--text-muted); font-size: 0.75rem; width: 14px; text-align: right;">${index + 1}.</span>
-                    <span class="cancion-titulo" style="font-weight: 500; overflow: hidden; text-overflow: ellipsis;">${track.titulo || track.title}</span>
+                <div class="cancion-col-info">
+                    <span class="cancion-index mini">${index + 1}.</span>
+                    <span class="cancion-titulo">${track.titulo || track.title}</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 10px; margin-left: 10px;">
-                    <span style="font-size: 0.75rem; color: var(--text-muted);">${duracionStr}</span>
-                    <button type="button" class="btn-play-track neu-btn-active" data-audio="${track.preview}" style="background: var(--color-primary); color: var(--color-btn-text); border: none; padding: 3px 8px; border-radius: var(--radius-pill); font-size: 0.7rem; cursor: pointer; font-weight: 600; min-width: 70px;">▶️ Escuchar</button>
+                <div class="cancion-col-acciones mini">
+                    <span class="cancion-duracion mini">${duracionStr}</span>
+                    <button type="button" class="btn-play-track mini-btn neu-btn-active" data-audio="${track.preview}">▶️ Escuchar</button>
                 </div>
             `;
 
@@ -218,6 +250,71 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         contenedor.appendChild(lista);
+    }
+
+    // --- CARGAR PISTAS DESDE LA API DE DEEZER DINÁMICAMENTE ---
+    function cargarTracksDinamicos(album, contenedor) {
+        contenedor.innerHTML = `
+            <div class="loading-tracks-spinner">
+                <div class="ucab-spinner"></div>
+                <p>Cargando canciones...</p>
+            </div>
+        `;
+
+        if (navigator.onLine === false) {
+            contenedor.innerHTML = `<p class="status-message-error">Requiere conexión para listar canciones de este álbum.</p>`;
+            return;
+        }
+
+        var queryFunc = typeof queryDeezer === "function" ? queryDeezer : window.queryDeezer;
+        if (typeof queryFunc !== "function") {
+            console.error("queryDeezer no está disponible.");
+            contenedor.innerHTML = `<p class="status-message-error">Error interno: Buscador no disponible.</p>`;
+            return;
+        }
+
+        queryFunc("https://api.deezer.com/album/" + album.id + "/tracks")
+            .then(function(res) {
+                if (res.data && res.data.length > 0) {
+                    const tracksParaGuardar = res.data.map(function(t) {
+                        return {
+                            id: t.id,
+                            titulo: t.title || t.titulo,
+                            preview: t.preview,
+                            duracion: t.duration || t.duracion
+                        };
+                    });
+
+                    // Actualizar el objeto local actual
+                    album.tracks = tracksParaGuardar;
+
+                    // Actualizar en localStorage
+                    var favoritos = obtenerFavoritos();
+                    var index = favoritos.findIndex(function(f) {
+                        return String(f.id) === String(album.id);
+                    });
+                    if (index > -1) {
+                        favoritos[index].tracks = tracksParaGuardar;
+                        favoritos[index].sincronizado = false; // Marcar para actualizar en el servidor
+                        guardarFavoritos(favoritos);
+
+                        // Intentar sincronizar con el servidor
+                        if (typeof window.sincronizarConServidor === "function") {
+                            window.sincronizarConServidor();
+                        } else if (typeof sincronizarConServidor === "function") {
+                            sincronizarConServidor();
+                        }
+                    }
+
+                    renderizarTracksLocales(album, contenedor);
+                } else {
+                    contenedor.innerHTML = `<p class="status-message-info">No se encontraron canciones en este álbum.</p>`;
+                }
+            })
+            .catch(function(err) {
+                console.error("Error al obtener canciones del álbum desde favoritos:", err);
+                contenedor.innerHTML = `<p class="status-message-error">Error al cargar canciones.</p>`;
+            });
     }
 
     // --- OBTENER EL FILTRO SELECCIONADO ---
